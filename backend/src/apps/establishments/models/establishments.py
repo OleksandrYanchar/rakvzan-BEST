@@ -261,13 +261,13 @@ class Establishment(TimedAndUnixIdBaseModel):
         null=True,
         blank=True,
     )
-    description = models.TextField(
-        max_length=1024,
-        verbose_name=_("Description"),
-        help_text=_("Description of the establishment"),
-        null=True,
-        blank=True,
-    )
+    # description = models.TextField(
+    #     max_length=1024,
+    #     verbose_name=_("Description"),
+    #     help_text=_("Description of the establishment"),
+    #     null=True,
+    #     blank=True,
+    # )
 
     class Meta:
         db_table = "establishments_establishment"
@@ -319,7 +319,7 @@ class Establishment(TimedAndUnixIdBaseModel):
             direct_loss_est=self.direct_loss_est,
             indirect_loss_est=self.indirect_loss_est,
             active=self.active,
-            description=self.description,
+            # description=self.description,
         )
 
     def to_simple_entity(self) -> EstablishmentSimpleEntity:

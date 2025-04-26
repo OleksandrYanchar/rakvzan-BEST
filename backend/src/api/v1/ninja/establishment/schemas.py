@@ -166,7 +166,7 @@ class EstablishmentSchema(BaseModel):
     direct_loss_est: Optional[float] = None
     indirect_loss_est: Optional[float] = None
     active: Optional[bool] = None
-    description: Optional[str] = None
+    # description: Optional[str] = None
 
     @staticmethod
     def from_entity(entity: EstablishmentEntity) -> Optional["EstablishmentSchema"]:
@@ -213,7 +213,7 @@ class EstablishmentSchema(BaseModel):
             direct_loss_est=entity.direct_loss_est,
             indirect_loss_est=entity.indirect_loss_est,
             active=entity.active,
-            description=entity.description,
+            # description=entity.description,
         )
 
 
@@ -241,7 +241,7 @@ class EstablishmentCreateSchema(BaseModel):
     has_veterans_discounts: Optional[bool] = None
     has_wifi: Optional[bool] = None
     edrpou: Optional[str] = None
-    description: Optional[str] = None
+    # description: Optional[str] = None
 
 
 class EstablishmentUpdateSchema(BaseModel):
@@ -268,4 +268,4 @@ class EstablishmentUpdateSchema(BaseModel):
     has_veterans_discounts: Optional[bool] = None
     has_wifi: Optional[bool] = None
     edrpou: Optional[str] = None
-    description: Optional[str] = None
+    # description: Optional[str] = None
