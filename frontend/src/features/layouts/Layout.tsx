@@ -17,7 +17,7 @@ const Layout: FC<LayoutInterface> = ({ children }) => {
         <Provider store={store}>
           <Header />
             {children}
-          <Footer />
+          {/* <Footer /> */}
         </Provider>
       </ThemeProvider>
     </>
