@@ -269,7 +269,6 @@ class EstablishmentController:
         establishment = self.establishment_service.activate_establishment(
             establishment_id=establishment_id,
         )
-)
 
         return ApiResponse(
             data=StatusOkSchema(
