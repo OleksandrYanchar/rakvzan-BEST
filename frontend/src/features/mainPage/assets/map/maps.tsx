@@ -108,3 +108,40 @@ export const maps = [
     id="Zhytomyr" 
     data-name="Житомирська"/>,
 ]
+
+export type CityCoordsType = {
+   id: string
+   lng: number
+   lat: number
+}
+
+export const cityCoords: CityCoordsType[] = [
+   { id: "Sevastpol' City",    lng: 33.5250, lat: 44.6167 },  // Севастополь
+   { id: "Crimea",             lng: 34.1024, lat: 44.9521 },  // Сімферополь
+   { id: "Cherkasy",           lng: 32.0598, lat: 49.4444 },  // Черкаси
+   { id: "Chernihiv",          lng: 31.2893, lat: 51.4982 },  // Чернігів
+   { id: "Chernivtsi",         lng: 25.9403, lat: 48.2915 },  // Чернівці
+   { id: "Dnipropetrovs'k",    lng: 35.0462, lat: 48.4647 },  // Дніпро
+   { id: "Donets'k",           lng: 37.8029, lat: 48.0159 },  // Донецьк
+   { id: "Ivano-Frankivs'k",   lng: 24.7111, lat: 48.9226 },  // Івано-Франківськ
+   { id: "Kharkiv",            lng: 36.2304, lat: 49.9935 },  // Харків
+   { id: "Kherson",            lng: 32.6169, lat: 46.6354 },  // Херсон
+   { id: "Khmel'nyts'kyy",     lng: 26.9965, lat: 49.4214 },  // Хмельницький
+   { id: "Kirovohrad",         lng: 32.2590, lat: 48.5079 },  // Кропивницький
+   { id: "Kiev City 1",        lng: 30.5234, lat: 50.4501 },  // Київ (місто)
+   { id: "Kiev",               lng: 30.1153, lat: 49.7955 },  // Київська обл. (Біла Церква)
+   { id: "L'viv",              lng: 24.0297, lat: 49.8397 },  // Львів
+   { id: "Luhans'k",           lng: 39.3078, lat: 48.5740 },  // Луганськ
+   { id: "Vinnyts'k",          lng: 28.4720, lat: 49.2328 },  // Вінниця
+   { id: "Volyn",              lng: 25.3245, lat: 50.7472 },  // Луцьк
+   { id: "Zhytomyr",           lng: 28.6587, lat: 50.2547 },  // Житомир
+   { id: "Zakarpats'ka",       lng: 22.2879, lat: 48.6208 },  // Ужгород
+   { id: "Zaporizhzhia",       lng: 35.1396, lat: 47.8388 },  // Запоріжжя
+   { id: "Odesa",              lng: 30.7233, lat: 46.4825 },  // Одеса
+   { id: "Mykolaiv",           lng: 31.9946, lat: 46.9750 },  // Миколаїв
+   { id: "Poltava",            lng: 34.5514, lat: 49.5883 },  // Полтава
+   { id: "Rivne",              lng: 26.2516, lat: 50.6199 },  // Рівне
+   { id: "Sumy",               lng: 34.7981, lat: 50.9077 },  // Суми
+   { id: "Ternopil",           lng: 25.5948, lat: 49.5535 },  // Тернопіль
+   { id: "Odessa",             lng: 30.7326, lat: 46.4845 },  // Тернопіль
+ ];

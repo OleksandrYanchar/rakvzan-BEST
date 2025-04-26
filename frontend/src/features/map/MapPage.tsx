@@ -17,6 +17,7 @@ import MapFilterPanel from "./components/MapFilterPanel";
 import { AccessibilityListEnum } from "../../utils/getAccessibilityList";
 import TuneIcon from '@mui/icons-material/Tune';
 import { changeOpenState } from "../../app/store/authMenuSlice";
+import { CityCoordsType } from "../mainPage/assets/map/maps";
 
 
 function ClickHandler({ onMapClick }: any) {
@@ -32,6 +33,8 @@ function ClickHandler({ onMapClick }: any) {
 const MapPage = () => {
   const [tempMark, setTempMark] = useState<BaseCoorsType | null>(null)
   const [isCreateModalOpen, setIsCreateModalOpen] = useState<boolean>(false)
+  const [tempCenter, setTempCenter] = useState<{lng: number, lat: number} |null>(null)
+  const [firstLoadState, setFirsLoadState] = useState<boolean>(false)
   // const [userPosition, setUserPosition] = useState<BaseCoorsType | null>({lng: 24.039995670318607, lat: 49.84636825169357});
   // const [endPosition, setEndPosition] = useState<BaseCoorsType | null>({lng: 24.022765159606937, lat: 49.839601606714496});
   const [userPosition, setUserPosition] = useState<BaseCoorsType | null>(null);
@@ -48,6 +51,42 @@ const MapPage = () => {
     let tempArray = routes?.data?.data?.map((value: number[]) => ({lat: value[0], lng: value[1]}))
     setExistingRoutes(tempArray)
   }, [routes])
+
+  useEffect(() => {
+    console.log(localStorage.getItem('tempCoors'))
+    let tempValue = JSON.parse(localStorage.getItem('tempCoors') || '{}') as CityCoordsType;
+    if (tempValue.id) {
+      console.log('1')
+      setTempCenter({lng: tempValue.lng, lat: tempValue.lat});
+      return;
+    } else {
+      console.log('2')
+      if (!navigator.geolocation) {
+        setShowError(true)
+        setTempCenter({
+          lat: 50.4501, 
+          lng: 30.5234
+        })
+        return;
+      } else {
+        console.log('3')
+        navigator.geolocation.getCurrentPosition(
+          (position) => {
+            setTempCenter({
+              lat: position.coords.latitude,
+              lng: position.coords.longitude,
+            });
+          },
+        )
+      }
+    }
+
+    setFirsLoadState(true)
+  }, [])
+
+  useEffect(() => {
+    console.log(tempCenter, firstLoadState)
+  }, [tempCenter])
 
   useEffect(() => {
     if(endPosition && userPosition) {
@@ -173,7 +212,7 @@ const MapPage = () => {
           lng={tempMark?.lng || 0}
         />
           <MarkerDetailView/>
-          <MapContainer center={[49.8397, 24.0297]} zoom={16} style={{ height: "100svh", width: "100%", borderRadius: '15px' }}>
+          {tempCenter && <MapContainer center={[tempCenter.lat, tempCenter.lng]} zoom={16} style={{ height: "100svh", width: "100%", borderRadius: '15px' }}>
             <TileLayer
               attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
               url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
@@ -217,35 +256,7 @@ const MapPage = () => {
             }
             
             {routes?.data?.data && existingRoutes && <RoutingMachine points={existingRoutes} />}
-            {/* {routes?.data?.data && <RoutingMachine points={[
-              {lat: 49.5419392, lng: 25.6835584},
-              {lat: 49.55874, lng: 25.62193},
-              {lat: 49.56806, lng: 25.55373},
-              {lat: 49.57597, lng: 25.49114},
-              {lat: 49.58483, lng: 25.42253},
-              {lat: 49.59908, lng: 25.3586},
-              {lat: 49.61009, lng: 25.29328},
-              {lat: 49.62441, lng: 25.23207},
-              {lat: 49.63982, lng: 25.16355},
-              {lat: 49.65132, lng: 25.09748},
-              {lat: 49.66557, lng: 25.02972},
-              {lat: 49.67621, lng: 24.96569},
-              {lat: 49.69248, lng: 24.90437},
-              {lat: 49.70033, lng: 24.84182},
-              {lat: 49.71479, lng: 24.77878},
-              {lat: 49.72416, lng: 24.71417},
-              {lat: 49.74087, lng: 24.65308},
-              {lat: 49.7546, lng: 24.58632},
-              {lat: 49.76551, lng: 24.5218},
-              {lat: 49.77995, lng: 24.45918},
-              {lat: 49.79554, lng: 24.3964},
-              {lat: 49.80719, lng: 24.33164},
-              {lat: 49.82191, lng: 24.26311},
-              {lat: 49.83785, lng: 24.20152},
-              {lat: 49.85093, lng: 24.13964},
-            ]} />} */}
-            {/* <Polyline positions={positions.map(pos => [pos.lat, pos.lng])} /> */}
-          </MapContainer>
+          </MapContainer>}
       </Box>
       );
 }
