@@ -148,7 +148,8 @@ class EstablishmentController:
         self,
         request: HttpRequest,
         establishment_id: int,
-    ) -> ApiResponse[EstablishmentSchema]:
+    # ) -> ApiResponse[EstablishmentSchema]:
+    ) -> ApiResponse[dict]:
         establishment = self.establishment_service.get_establishment_by_id(establishment_id)
 
         if not establishment:
@@ -159,7 +160,7 @@ class EstablishmentController:
         data = EstablishmentSchema.from_entity(establishment)
         
         diia_url = "https://api.spending.gov.ua/api/v2/disposers/acts"
-        diia_params = {"disposerId": establishment.edrpou}
+        diia_params = {"contractorId": establishment.edrpou}
         
         
         diia_city_response = request.get(diia_url, params=diia_params)
