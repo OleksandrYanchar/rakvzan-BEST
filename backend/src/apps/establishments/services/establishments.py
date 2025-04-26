@@ -1,6 +1,7 @@
 from abc import ABC, abstractmethod
 from typing import List, Optional
 
+from requests import request
 from django.contrib.auth.models import User
 from django.core.files.uploadedfile import UploadedFile
 from django.db.models import Q
@@ -309,6 +310,36 @@ class ORMEstablishmentService(EstablishmentService):
         try:
             establishment = EstablishmentModel.objects.get(id=establishment_id)
             establishment.delete()
+            return True
+        except EstablishmentModel.DoesNotExist:
+            return False
+        
+    def activate_establishment(self, establishment_id: int) -> bool:
+        try:
+            establishment = EstablishmentModel.objects.get(id=establishment_id)
+            
+            spending_gov_ua_url = "https://city-backend.diia.gov.ua/api/front/registry/resident"
+            spending_gow_ua_params = {"kw": establishment.edrpou}
+            spending_gov_ua_response = request.get(spending_gov_ua_url, params=spending_gow_ua_params)
+            spending_gov_ua_response.raise_for_status()
+            spending_gov_ua_payload = spending_gov_ua_response.json()
+            spending_gov_ua_data = spending_gov_ua_payload.get("data", [])
+            
+            if len(spending_gov_ua_data) == 0:
+                return False
+            
+            establishment.is_active = True
+            establishment.save()
+            return True
+        except EstablishmentModel.DoesNotExist:
+            return False
+        
+    def true_activate_establishment(self, establishment_id: int) -> bool:
+        try:
+            establishment = EstablishmentModel.objects.get(id=establishment_id)
+            
+            establishment.is_active = True
+            establishment.save()
             return True
         except EstablishmentModel.DoesNotExist:
             return False
