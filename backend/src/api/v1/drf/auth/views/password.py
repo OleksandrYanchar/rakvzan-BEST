@@ -12,7 +12,7 @@ from src.api.v1.drf.auth.serializers import (
 )
 from src.api.v1.drf.schemas import ApiResponse
 from src.apps.common.permissions import IsNotAuthenticated
-from src.apps.users.services.emails import send_email
+
 
 User = get_user_model()
 
@@ -44,12 +44,6 @@ class ResetPasswordView(CreateAPIView):
             user = User.objects.get(email=serializer.validated_data["email"])
             if user:
                 code = User.objects.generate_email_token(user)
-                send_email(
-                    subject="Confirm deactivating of your account",
-                    template="email/password_reset.html",
-                    user=user,
-                    code=code,
-                )
                 return ApiResponse(data={"code": code}, status=status.HTTP_200_OK)
 
         return ApiResponse(data={"message": serializer.errors}, status=status.HTTP_400_BAD_REQUEST)

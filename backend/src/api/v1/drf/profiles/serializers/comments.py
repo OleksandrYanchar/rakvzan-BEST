@@ -17,18 +17,18 @@ class EstablishmentSerializer(serializers.ModelSerializer):
             "created_at",
             "updated_at",
             "first_image",
+            "edrpou",
+            "employees",
+            "avg_monthly_income",
+            "annual_tax",
+            "premises_area",
+            "status",
+            "destruction_date",
+            "direct_loss_est",
+            "indirect_loss_est",
+
         ]
-        read_only_fields = [
-            "id",
-            "name",
-            "description",
-            "address",
-            "latitude",
-            "longitude",
-            "created_at",
-            "updated_at",
-            "first_image"
-        ]
+        read_only_fields = fields
 
     def get_first_image(self, obj):
         first_photo = obj.photos.first()

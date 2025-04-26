@@ -19,12 +19,13 @@ class ProfileSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ("email", "username", "first_name", "last_name", "id","comments", "comments_count", "establishments",)
+        fields = ("email", "username", "first_name", "last_name", "id","comments", "comments_count", "establishments", "edrpou")
         extra_kwargs = {
             "first_name": {"required": True},
             "last_name": {"required": True},
             "email": {"read_only": True},
             "username": {"read_only": True},
             "id": {"read_only": True},
+            "edrpou": {"read_only": True},
 
         }

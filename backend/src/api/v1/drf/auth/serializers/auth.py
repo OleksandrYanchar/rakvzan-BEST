@@ -10,10 +10,11 @@ User = get_user_model()
 class UserAuthSerializer(serializers.ModelSerializer):
     password1 = serializers.CharField(max_length=128, write_only=True, required=True)
     password2 = serializers.CharField(max_length=128, write_only=True, required=True)
+    edrpou = serializers.IntegerField(required=False, allow_null=True)
 
     class Meta:
         model = User
-        fields = ["username", "email", "password1", "password2"]
+        fields = ["username", "email", "password1", "password2", "edrpou"]
 
     def validate_email(self, value):
         if User.objects.filter(email=value).exists():
