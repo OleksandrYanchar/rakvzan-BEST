@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 from typing import List, Optional
 
-from requests import request
+
 from django.contrib.auth.models import User
 from django.core.files.uploadedfile import UploadedFile
 from django.db.models import Q
@@ -320,7 +320,7 @@ class ORMEstablishmentService(EstablishmentService):
             
             spending_gov_ua_url = "https://city-backend.diia.gov.ua/api/front/registry/resident"
             spending_gow_ua_params = {"kw": establishment.edrpou}
-            spending_gov_ua_response = request.get(spending_gov_ua_url, params=spending_gow_ua_params)
+            spending_gov_ua_response = requests.get(spending_gov_ua_url, params=spending_gow_ua_params)
             spending_gov_ua_response.raise_for_status()
             spending_gov_ua_payload = spending_gov_ua_response.json()
             spending_gov_ua_data = spending_gov_ua_payload.get("data", [])
