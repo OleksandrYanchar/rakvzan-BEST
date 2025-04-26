@@ -17,6 +17,7 @@ from src.api.v1.ninja.establishment.schemas import (
     CommentLikeSchema,
     CommentCreateSchema,
 )
+from requests import request
 from src.apps.establishments.services.establishments import (
     EstablishmentPhotoService, EstablishmentService,
     ORMEstablishmentPhotoService, ORMEstablishmentService,
@@ -156,7 +157,31 @@ class EstablishmentController:
             )
 
         data = EstablishmentSchema.from_entity(establishment)
-
+        
+        diia_url = "https://api.spending.gov.ua/api/v2/disposers/acts"
+        diia_params = {"disposerId": establishment.edrpou}
+        
+        
+        diia_city_response = request.get(diia_url, params=diia_params)
+        diia_city_response.raise_for_status()
+        
+        diia_payload = diia_city_response.json()
+        
+        diia_city_data = diia_payload.get("data", [])
+        
+        spending_gov_ua_url = "https://city-backend.diia.gov.ua/api/front/registry/resident"
+        spending_gow_ua_params = {"kw": establishment.edrpou}
+        spending_gov_ua_response = request.get(spending_gow_ua_url, params=spending_gow_ua_params)
+        spending_gov_ua_response.raise_for_status()
+        spending_gov_ua_payload = spending_gov_ua_response.json()
+        spending_gov_ua_data = spending_gov_ua_payload.get("data", [])
+        
+        data = {
+            "establishment": data,
+            "diia_city": diia_city_data,
+            "spending_gov_ua": spending_gov_ua_data
+        }
+        
         return ApiResponse(
             data=data,
         )
