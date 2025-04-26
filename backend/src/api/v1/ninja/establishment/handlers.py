@@ -158,7 +158,6 @@ class EstablishmentController:
             )
 
         data = EstablishmentSchema.from_entity(establishment)
-        
         diia_url = "https://api.spending.gov.ua/api/v2/disposers/acts"
         diia_params = {"contractorId": establishment.edrpou}
         
@@ -534,4 +533,21 @@ class EstablishmentController:
             data={
                 "data": data,
                 },
+        )
+
+    @route.get(
+        "/spending/{esteblishment_id}",
+        response=ApiResponse[dict],
+        auth=JWTAuth(),
+        permissions=[permissions.IsAuthenticated],
+    )
+    def spending(
+        self,
+        request: HttpRequest,
+        code_edrpou: str,
+    ) -> ApiResponse[dict]:
+       return ApiResponse(
+            data={
+                "data": 123
+            },
         )
