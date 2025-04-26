@@ -189,6 +189,71 @@ class Establishment(TimedAndUnixIdBaseModel):
         help_text=_("Does the establishment have WiFi?"),
     )
 
+    edrpou = models.CharField(
+        max_length=10,
+        unique=True,
+        verbose_name=_("ЄДРПОУ"),
+        help_text=_("Код ЄДРПОУ підприємства"),
+    )
+    employees = models.IntegerField(
+        verbose_name=_("Працівники"),
+        help_text=_("Кількість працівників"),
+        blank=True,
+        null=True,
+    )
+    avg_monthly_income = models.DecimalField(
+        max_digits=15, decimal_places=2,
+        verbose_name=_("Ср. місячний дохід (₴)"),
+        help_text=_("Середній дохід за місяць"),
+        blank=True,
+        null=True,
+    )
+    annual_tax = models.DecimalField(
+        max_digits=15, decimal_places=2,
+        verbose_name=_("Щорічні податки (₴)"),
+        help_text=_("Сума сплачених податків за рік"),
+        blank=True,
+        null=True,
+    )
+    premises_area = models.DecimalField(
+        max_digits=10, decimal_places=2,
+        verbose_name=_("Площа (кв.м)"),
+        help_text=_("Площа виробничих та офісних приміщень"),
+        blank=True,
+        null=True,
+    )
+    status = models.CharField(
+        max_length=10,
+        choices=(
+            ("active", _("Активне")),
+            ("closed", _("Закрите")),
+            ("damaged", _("Пошкоджене")),
+        ),
+        default="active",
+        verbose_name=_("Статус"),
+        help_text=_("Стан підприємства: активне, закрите чи пошкоджене"),
+    )
+    destruction_date = models.DateField(
+        verbose_name=_("Дата руйнуввання"),
+        help_text=_("Дата руйнуввання підприємства"),
+        blank=True,
+        null=True,
+    )
+    direct_loss_est = models.DecimalField(
+        max_digits=15, decimal_places=2,
+        verbose_name=_("Прямі збитки (₴)"),
+        help_text=_("Оцінка прямих збитків від війни"),
+        blank=True,
+        null=True,
+    )
+    indirect_loss_est = models.DecimalField(
+        max_digits=15, decimal_places=2,
+        verbose_name=_("Непрямі збитки (₴)"),
+        help_text=_("Оцінка непрямих збитків від війни"),
+        blank=True,
+        null=True,
+    )
+
     class Meta:
         db_table = "establishments_establishment"
         verbose_name = _("Establishment")
@@ -229,6 +294,15 @@ class Establishment(TimedAndUnixIdBaseModel):
             is_public=self.is_public,
             photos=[photo.to_entity() for photo in self.photos.all()],
             comments=[comment.to_entity() for comment in self.comments.all()],
+            edrpou=self.edrpou,
+            employees=self.employees,
+            avg_monthly_income=self.avg_monthly_income,
+            annual_tax=self.annual_tax,
+            premises_area=self.premises_area,
+            status=self.status,
+            destruction_date=self.destruction_date,
+            direct_loss_est=self.direct_loss_est,
+            indirect_loss_est=self.indirect_loss_est,
         )
 
     def to_simple_entity(self) -> EstablishmentSimpleEntity:
