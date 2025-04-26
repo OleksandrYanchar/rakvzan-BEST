@@ -168,6 +168,11 @@ class EstablishmentController:
         
         diia_payload = diia_city_response.json()
         
+        if diia_payload.get("count", 0) == 0:
+            return ApiResponse(
+                data=123,
+            )
+        
         diia_city_data = diia_payload.get("documents", [])
         
         spending_gov_ua_url = "https://city-backend.diia.gov.ua/api/front/registry/resident"
