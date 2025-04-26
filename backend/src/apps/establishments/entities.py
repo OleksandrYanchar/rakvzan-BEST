@@ -82,3 +82,12 @@ class EstablishmentEntity:
     is_public: Optional[bool] = None
     photos: Optional[List[EstablishmentPhotoEntity]] = None
     comments: Optional[List[CommentEntity]] = None
+    edrpou: Optional[str] = None
+    employees: Optional[int] = None
+    avg_monthly_income: Optional[float] = None
+    annual_tax: Optional[float] = None
+    premises_area: Optional[float] = None
+    status: Optional[str] = None
+    destruction_date: Optional[str] = None
+    direct_loss_est: Optional[float] = None
+    indirect_loss_est: Optional[float] = None

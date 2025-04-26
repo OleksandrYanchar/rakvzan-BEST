@@ -154,6 +154,15 @@ class EstablishmentSchema(BaseModel):
     is_public: Optional[bool] = None
     photos: Optional[List[EstablishmentPhotoEntity]] = None
     comments: Optional[List[CommentEntity]] = None
+    edrpou: Optional[str] = None
+    employees: Optional[int] = None
+    avg_monthly_income: Optional[float] = None
+    annual_tax: Optional[float] = None
+    premises_area: Optional[float] = None
+    status: Optional[str] = None
+    destruction_date: Optional[str] = None
+    direct_loss_est: Optional[float] = None
+    indirect_loss_est: Optional[float] = None
 
     @staticmethod
     def from_entity(entity: EstablishmentEntity) -> Optional["EstablishmentSchema"]:
@@ -188,8 +197,17 @@ class EstablishmentSchema(BaseModel):
             is_active=entity.is_active,
             is_deleted=entity.is_deleted,
             is_public=entity.is_public,
-            photos=entity.photos,
-            comments=entity.comments,
+            photos=[EstablishmentPhotoSchema.from_entity(photo) for photo in (entity.photos or [])],
+            comments=[CommentSchema.from_entity(comment) for comment in (entity.comments or [])],
+            edrpou=entity.edrpou,
+            employees=entity.employees,
+            avg_monthly_income=entity.avg_monthly_income,
+            annual_tax=entity.annual_tax,
+            premises_area=entity.premises_area,
+            status=entity.status,
+            destruction_date=entity.destruction_date,
+            direct_loss_est=entity.direct_loss_est,
+            indirect_loss_est=entity.indirect_loss_est,
         )
 
 
