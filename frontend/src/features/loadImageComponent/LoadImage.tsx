@@ -54,7 +54,7 @@ const LoadImage: FC<LoadImageInterface> = ({ selectedFiles, setSelectedFiles }) 
         }}
       >
         <UploadFileIcon sx={{ marginBottom: '15px' }} />
-        Прикріпіть фото до відгуку
+        Прикріпіть фото для об'єкта
       </Box>
 
       {selectedFiles.length > 0 && (

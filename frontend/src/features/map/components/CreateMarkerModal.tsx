@@ -1,9 +1,10 @@
 import { Alert, Box, Button, Checkbox, colors, FormControl, FormControlLabel, FormGroup, Modal, TextField, Typography } from "@mui/material"
 import { Formik } from "formik"
-import { FC } from "react"
+import { FC, useState } from "react"
 import LoadImage from "../../loadImageComponent/LoadImage"
 import { AccessibilityListEnum } from "../../../utils/getAccessibilityList"
 import { usePostMarkerMutation, usePostPhotosMutation } from "../slices/markerSlices"
+import { ReactComponent as SucccessImage } from '../assets/images/success.svg'
 
 interface CreateMarkerModalInterface {
     isOpen: boolean
@@ -20,6 +21,7 @@ const CreateMarkerModal: FC<CreateMarkerModalInterface> = ({
 }) => {
     const [triggerPostMarker] = usePostMarkerMutation()
     const [triggerPostMarkerPhotos] = usePostPhotosMutation()
+    const [formStatus, setFormStatus] = useState<'nonActive'|'loading' | 'error' | 'success'>('nonActive')
     return(
         <Modal
             open={isOpen}
@@ -34,8 +36,8 @@ const CreateMarkerModal: FC<CreateMarkerModalInterface> = ({
             >
             <Box
                 sx={{ 
-                    width: '40svw',
-                    height: '80svh',
+                    width: '20svw',
+                    height: '40svh',
                     background: colors.common.white,
                     padding: '24px',
                     borderRadius:" 25px",
@@ -59,10 +61,7 @@ const CreateMarkerModal: FC<CreateMarkerModalInterface> = ({
                         name: '', 
                         address: '', 
                         photos: [] as File[],
-                        // accessability: [], 
-                        // ...Object.keys(AccessibilityListEnum).map((value) =>({
-                        //     value: false
-                        // }))
+                        EDRPOYCode: '',
                     }}
                     onSubmit={async (values, { setSubmitting }) => {
                         await triggerPostMarker({
@@ -70,14 +69,14 @@ const CreateMarkerModal: FC<CreateMarkerModalInterface> = ({
                             latitude: lat,
                             longitude: lng,
                             address: values.address,
+                            edrpou: values.EDRPOYCode
                         }).then((res: any) => {
                             if (res.data.data.id){
                                 triggerPostMarkerPhotos({
                                     photos: values.photos,
                                     id: res.data.data.id,
                                 }).then(()=>{
-                                    handleClose()
-                                    window.location.reload()
+                                    
                                 })
                             }
                         })
@@ -92,85 +91,71 @@ const CreateMarkerModal: FC<CreateMarkerModalInterface> = ({
                     handleSubmit,
                     isSubmitting,
                     setFieldValue
-                    /* and other goodies */
                 }) => (
-                    <form onSubmit={handleSubmit} style={{ width: '80%', marginTop: '24px' }}>
-                    <FormControl variant="standard" sx={{ width: '100%' }}>
-                    <Typography>
-                        Додати
-                    </Typography>
-                    <LoadImage
-                        selectedFiles={values.photos}
-                        setSelectedFiles={(value: File[]) => setFieldValue('photos', value)}
-                    />
-                    {errors?.photos as string}
-                        <Alert severity="info">Фотографії перевіряються штучним інтелектом після чого визначається наявність доступностей</Alert>
-                    <Typography>
-                        Назва закладу
-                    </Typography>
-                    <TextField
-                        id="input-with-icon-textfield"
-                        value={values.name}
-                        name={'name'}
-                        onChange={handleChange}
-                        label=""
-                        sx={{
-                            width: '100%'
-                        }}
-                        error={!!errors?.name}
-                    />
-                    <Typography
-                        sx={{
-                            marginTop: '16px',
-                        }}
-                    >
-                        Адреса
-                    </Typography>
-                    <TextField
-                        value={values.address}
-                        name={'address'}
-                        onChange={handleChange}
-                        id="input-with-icon-textfield"
-                        label=""
-                        sx={{
-                            width: '100%'
-                        }}
-                        error={!!errors?.address}
-                    />
-                    
-                    {/* <Typography
-                        sx={{
-                            marginTop: '16px',
-                        }}
-                    >
-                        Доступність
-                    </Typography>
-                    <FormGroup>
-                        {Object.keys(AccessibilityListEnum).map((value, index) => {
-                            return (
-                                <FormControlLabel 
-                                    key={index}
-                                    control={<Checkbox checked={!!values[value as keyof typeof values]} />} 
-                                    label={AccessibilityListEnum[value as keyof typeof AccessibilityListEnum]}
-                                    onChange={(_, checked) => {
-                                        
-                                        setFieldValue(value, checked)
-                                    }}
+                    <>
+                        {formStatus === 'nonActive' && <form onSubmit={handleSubmit} style={{ width: '80%', marginTop: '24px' }}>
+                                <FormControl variant="standard" sx={{ width: '100%' }}>
+                                <Typography>
+                                    Додати
+                                </Typography>
+                                <LoadImage
+                                    selectedFiles={values.photos}
+                                    setSelectedFiles={(value: File[]) => setFieldValue('photos', value)}
                                 />
-                            )
-                        })}
-                    </FormGroup> */}
-                    <Button
-                        type="submit"
-                        variant="contained"
-                        sx={{
-                            marginTop: '32px'
-                        }}
-                    >
-                        Надіслати заявку
-                    </Button>
-                    </FormControl>
-                </form>
+                                {errors?.photos as string}
+                                <TextField
+                                    id="input-with-icon-textfield"
+                                    value={values.name}
+                                    name={'name'}
+                                    placeholder="Назва об'єкта"
+                                    onChange={handleChange}
+                                    label=""
+                                    sx={{
+                                        width: '100%',
+                                        marginTop: '16px',
+                                    }}
+                                    error={!!errors?.name}
+                                />
+                                <TextField
+                                    value={values.address}
+                                    name={'address'}
+                                    placeholder="Адреса об'єкта"
+                                    onChange={handleChange}
+                                    id="input-with-icon-textfield"
+                                    label=""
+                                    sx={{
+                                        width: '100%',
+                                        marginTop: '16px',
+                                    }}
+                                    error={!!errors?.address}
+                                />
+                                <TextField
+                                    value={values.EDRPOYCode}
+                                    name={'EDRPOYCode'}
+                                    placeholder="Код ЄДРПОУ"
+                                    onChange={handleChange}
+                                    id="input-with-icon-textfield"
+                                    label=""
+                                    sx={{
+                                        width: '100%',
+                                        marginTop: '16px',
+                                    }}
+                                    error={!!errors?.EDRPOYCode}
+                                />
+                                <Button
+                                    type="submit"
+                                    variant="contained"
+                                    sx={{
+                                        marginTop: '32px'
+                                    }}
+                                >
+                                    Зберегти
+                                </Button>
+                                </FormControl>
+                            </form>
+                        } 
+                    </>
+                    
                 )}
                 </Formik>
             </Box>

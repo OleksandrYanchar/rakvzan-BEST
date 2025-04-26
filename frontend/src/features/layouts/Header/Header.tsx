@@ -20,7 +20,7 @@ const Header = () => {
                 padding: '19px 42px'
             }}
         >
-            {/* <Drawer 
+            <Drawer 
                 anchor="top" 
                 open={isAccountPageOpen} 
                 onClose={() => setIsAccountPageOpen(false)}
@@ -93,7 +93,7 @@ const Header = () => {
                     </Button>
                 </Box>
             
-            } */}
+            }
         </Box>
     );
 };
