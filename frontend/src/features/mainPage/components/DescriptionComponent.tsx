@@ -13,24 +13,18 @@ const DescriptionComponent: FC<DescriptionComponentInterface> = ({
     return(
         <Box
             sx={{
-                padding: '48px 33px 60px 33px',
-                background: colors.common.white,
-                borderRadius: '10px',
-                width: 'calc(350px - 33px)',
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'center',
-                flexDirection: 'column',
-                boxShadow: '0px 0px 8.9px 0px #0000001A'
+                display: 'flex'
             }}
         >
             {image}
-            <Typography variant="subtitle1" sx={{ margin: '32px 0 12px 0' }}>
-                {title}
-            </Typography>
-            <Typography variant="subtitle2">
-                {description}
-            </Typography>
+            <Box>
+                <Typography variant="subtitle1" sx={{ margin: '32px 0 12px 0' }}>
+                    {title}
+                </Typography>
+                <Typography variant="subtitle2">
+                    {description}
+                </Typography>
+            </Box>
         </Box>
     )
 }

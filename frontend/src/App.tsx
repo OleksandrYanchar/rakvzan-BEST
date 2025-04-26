@@ -2,12 +2,7 @@
 
 import React from 'react';
 import { Box } from '@mui/material';
-import { 
-  createBrowserRouter, 
-  createRoutesFromElements, 
-  RouterProvider, 
-  Route 
-} from 'react-router-dom';
+import {BrowserRouter as Router, Route, Routes, createBrowserRouter, createRoutesFromElements} from 'react-router-dom';
 import { routes } from './routes/routes';
 import { type RouterType } from './types/routersTypes';
 import Layout from './features/layouts/Layout';
@@ -23,9 +18,18 @@ function App() {
 
   return (
     <Box className="app">
-      <Layout> 
-        <RouterProvider router={router} />
-      </Layout>
+      <Router>
+          <Layout> 
+        <Routes>
+            {/* <RouterProvider router={router} /> */}
+            {routes.map((route: RouterType) => (
+            <Route key={route.path} {...route} />
+          ))}
+          
+        </Routes>
+        </Layout>
+        
+      </Router>
     </Box>
   );
 }

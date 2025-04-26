@@ -9,7 +9,7 @@ interface detailMarkerSliceInterface {
   address: string
   accesabilityList: any[]
   comments: any[]
-  raiting: number
+  rating: number
   photos: any[]
 }
 
@@ -20,7 +20,7 @@ const detailMarkerSliceInitialState: detailMarkerSliceInterface = {
   address: '',
   accesabilityList: [],
   comments: [],
-  raiting: 0,
+  rating: 0,
   photos: [],
 }
 

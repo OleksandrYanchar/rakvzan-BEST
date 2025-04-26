@@ -17,7 +17,6 @@ export const authMenuSlice = createSlice({
   initialState: authMenuSliceInitialState,
   reducers: {
     changeOpenState: (state, value : PayloadAction<boolean>) => {
-      console.log(value, state)
       state.isModalOpen = value.payload
     },
     changeActiveForm: (state, value : PayloadAction<ActiveFormType>) => {
