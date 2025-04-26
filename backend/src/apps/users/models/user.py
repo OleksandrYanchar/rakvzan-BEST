@@ -1,3 +1,4 @@
+import uuid
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
 from django.core.mail import send_mail
 from django.db import models
@@ -6,8 +7,12 @@ from src.apps.users.managers import UserManager
 
 
 class User(AbstractBaseUser, PermissionsMixin):
-    id = models.AutoField(primary_key=True)
-
+    id = models.UUIDField(
+        primary_key=True,
+        default=uuid.uuid4,
+        editable=False,
+        db_index=True,
+    )
     email = models.EmailField(unique=True)
     username = models.CharField(max_length=150, unique=True)
     created_at = models.DateField(auto_now_add=True)
@@ -40,6 +45,8 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     edrpou = models.IntegerField(
         unique=True,
+        null=True,
+        blank=True,
         verbose_name=_("ЄДРПОУ"),
         help_text=_("Код ЄДРПОУ особи"),
     )

@@ -192,6 +192,8 @@ class Establishment(TimedAndUnixIdBaseModel):
     edrpou = models.CharField(
         max_length=10,
         unique=True,
+        null=True,
+        blank=True,
         verbose_name=_("ЄДРПОУ"),
         help_text=_("Код ЄДРПОУ підприємства"),
     )

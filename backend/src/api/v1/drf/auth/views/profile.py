@@ -10,7 +10,6 @@ from rest_framework.views import APIView
 from src.api.v1.drf.auth.serializers import ConfirmUserSerializer
 from src.api.v1.drf.schemas import ApiResponse
 from src.apps.common.permissions import IsNotConfirmed
-from src.apps.users.services.emails import send_email
 
 User = get_user_model()
 
@@ -25,12 +24,6 @@ class DeactivateUserView(CreateAPIView):
         if serializer.is_valid(raise_exception=True):
             code = User.objects.generate_email_token(request.user)
 
-            send_email(
-                subject="Confirm deactivating of your account",
-                template="email/deactivate_user.html",
-                user=request.user,
-                code=code,
-            )
             return ApiResponse(data={"code": code}, status=status.HTTP_200_OK)
 
         return ApiResponse(data={"message": serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
@@ -92,12 +85,7 @@ class ResendEmailConfirmationView(APIView):
     def get(self, request: Request):
         try:
             code = User.objects.generate_email_token(request.user)
-            send_email(
-                subject="Confirm your email",
-                template="email/email_verification.html",
-                user=request.user,
-                code=code,
-            )
+
             return ApiResponse(data={"code": code}, status=status.HTTP_200_OK)
 
         except Exception as e:
@@ -116,12 +104,7 @@ class DeleteUserView(GenericAPIView):
 
         if serializer.is_valid(raise_exception=True):
             code = User.objects.generate_email_token(request.user)
-            send_email(
-                subject="Confirm deleting of your account",
-                template="email/delete_user.html",
-                user=request.user,
-                code=code,
-            )
+
             return ApiResponse(data={"code": code}, status=status.HTTP_200_OK)
 
         return ApiResponse(status=status.HTTP_204_NO_CONTENT)

@@ -290,9 +290,10 @@ class ORMEstablishmentService(EstablishmentService):
         user: User,
         establishment_data: dict,
     ) -> EstablishmentEntity:
-        establishment = EstablishmentModel(owner=user, **establishment_data)
-        establishment.save()
-        return establishment.to_entity()
+        if user.edrpou:
+            establishment = EstablishmentModel(owner=user, **establishment_data)
+            establishment.save()
+            return establishment.to_entity()
 
     def update_establishment(self, establishment_id: int, establishment_data: dict) -> EstablishmentEntity:
         try:

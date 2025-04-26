@@ -11,7 +11,6 @@ from src.api.v1.drf.auth.serializers import (
     UserAuthSerializer,
 )
 from src.apps.common.permissions import IsNotAuthenticated
-from src.apps.users.services.emails import send_email
 from src.apps.users.services.tokens import create_jwt_pair_for_user
 from django.conf import settings
 from google.auth.transport import requests
@@ -33,12 +32,6 @@ class RegistrateUserView(CreateAPIView):
                 print(serializer.validated_data)
                 user = serializer.save()
                 code = User.objects.generate_email_token(user)
-                send_email(
-                    subject="Confirm your email",
-                    template="email/email_verification.html",
-                    user=user,
-                    code=code,
-                )
                 return ApiResponse(
                     data={
                         "tokens": create_jwt_pair_for_user(user=user),
