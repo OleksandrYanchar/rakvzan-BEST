@@ -171,7 +171,7 @@ class EstablishmentController:
         
         spending_gov_ua_url = "https://city-backend.diia.gov.ua/api/front/registry/resident"
         spending_gow_ua_params = {"kw": establishment.edrpou}
-        spending_gov_ua_response = request.get(spending_gow_ua_url, params=spending_gow_ua_params)
+        spending_gov_ua_response = request.get(spending_gov_ua_url, params=spending_gow_ua_params)
         spending_gov_ua_response.raise_for_status()
         spending_gov_ua_payload = spending_gov_ua_response.json()
         spending_gov_ua_data = spending_gov_ua_payload.get("data", [])
