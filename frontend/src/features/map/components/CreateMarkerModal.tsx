@@ -3,7 +3,7 @@ import { Formik } from "formik"
 import { FC, useState } from "react"
 import LoadImage from "../../loadImageComponent/LoadImage"
 import { AccessibilityListEnum } from "../../../utils/getAccessibilityList"
-import { usePostMarkerMutation, usePostPhotosMutation } from "../slices/markerSlices"
+import { useLazyActivateQuery, usePostMarkerMutation, usePostPhotosMutation, useLazyActivateFormQuery } from "../slices/markerSlices"
 import { ReactComponent as SucccessImage } from '../assets/images/success.svg'
 import { ReactComponent as UnSucccessImage } from '../assets/images/unSuccess.svg'
 
@@ -22,7 +22,9 @@ const CreateMarkerModal: FC<CreateMarkerModalInterface> = ({
 }) => {
     const [triggerPostMarker] = usePostMarkerMutation()
     const [triggerPostMarkerPhotos] = usePostPhotosMutation()
-    const [formStatus, setFormStatus] = useState<'nonActive' | 'error' | 'success'>('nonActive')
+    const [triggerActivate] = useLazyActivateQuery()
+    const [triggerActivateForm] = useLazyActivateFormQuery()
+    const [formStatus, setFormStatus] = useState<'nonActive' | 'error' | 'success' | 'secondConfirmModal'>('nonActive')
     const [isLoading, setIsLoading] = useState<boolean>(false)
     return(
         <Modal
@@ -85,8 +87,12 @@ const CreateMarkerModal: FC<CreateMarkerModalInterface> = ({
                                 triggerPostMarkerPhotos({
                                     photos: values.photos,
                                     id: res.data.data.id,
-                                }).then(()=>{
-                                    setFormStatus('success')
+                                }).then((res)=>{
+                                    triggerActivate({id: res.data.data.id}).then((res) => {
+                                        if (res.data.data.id) {
+                                            setFormStatus('success')
+                                        }
+                                    })
                                     
                                 })
                                 setIsLoading(false)

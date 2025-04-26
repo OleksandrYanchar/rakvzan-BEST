@@ -4,7 +4,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { changeActiveForm, changeOpenState } from "../../../app/store/authMenuSlice";
 import type { RootState } from "../../../app/baseStore";
 import { useEffect } from "react";
-import { ReactComponent as LogoImage } from '../../../app/assets/images/logo.svg' 
 import LoginForm from "./loginForm";
 import RegisterForm from "./RegisterForm";
 
@@ -46,7 +45,6 @@ const LoginPage = () => {
                             alignItems: 'center'
                         }}
                     >
-                        <LogoImage/>
                         <Typography variant="subtitle1" sx={{ margin: '24px 0 8px 0' }}>
                             {authMenu.activeForm === 'log'? 'Увійти':'Зареєструватись'}
                         </Typography>

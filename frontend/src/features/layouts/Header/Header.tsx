@@ -1,6 +1,5 @@
 import { Box, Button, Drawer, Typography } from "@mui/material";
 import { FC, ReactNode, useState } from "react";
-import {ReactComponent as LogoImage} from '../../../app/assets/images/logo.svg'
 import { useDispatch } from "react-redux";
 import { changeActiveForm, changeOpenState } from "../../../app/store/authMenuSlice";
 import LoginPage from "../../auth/loginPage/LoginPage";
@@ -32,12 +31,7 @@ const Header = () => {
             <LoginPage/>
             <Box>
                 <Link to='/'>
-                    <LogoImage
-                        style={{
-                            width: 'auto',
-                            height: '40px'
-                        }}
-                        />
+                    Головна
                 </Link>
             </Box>
             {localStorage.getItem('username')?

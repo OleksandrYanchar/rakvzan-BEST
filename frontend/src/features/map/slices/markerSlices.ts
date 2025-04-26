@@ -43,8 +43,20 @@ export const markerSlices = baseApi.injectEndpoints({
             body: formData,
           };
         },
-    }),
+      }),
+      activate: builder.query({
+        query: (body) => ({
+            url: `/api/v1/ninja/establishments/${body.id}/activate`,
+            method: 'GET',
+          }),
+      }),
+      activateForm: builder.query({
+        query: (body) => ({
+            url: `/api/v1/ninja/establishments/${body.id}/activate_form`,
+            method: 'GET',
+        }),
+      }),
   }),
 });
 
-  export const { usePostMarkerMutation, usePostPhotosMutation } = markerSlices
+  export const { usePostMarkerMutation, usePostPhotosMutation, useLazyActivateQuery, useLazyActivateFormQuery } = markerSlices
