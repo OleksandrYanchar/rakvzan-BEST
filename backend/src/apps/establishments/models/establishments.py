@@ -188,7 +188,6 @@ class Establishment(TimedAndUnixIdBaseModel):
         verbose_name=_("Has WiFi"),
         help_text=_("Does the establishment have WiFi?"),
     )
-
     edrpou = models.CharField(
         max_length=10,
         unique=True,
@@ -255,6 +254,13 @@ class Establishment(TimedAndUnixIdBaseModel):
         blank=True,
         null=True,
     )
+    active = models.BooleanField(
+        default=False,
+        verbose_name=_("Active"),
+        help_text=_("Is the establishment active?"),
+        null=True,
+        blank=True,
+    )
 
     class Meta:
         db_table = "establishments_establishment"
@@ -305,6 +311,7 @@ class Establishment(TimedAndUnixIdBaseModel):
             destruction_date=self.destruction_date,
             direct_loss_est=self.direct_loss_est,
             indirect_loss_est=self.indirect_loss_est,
+            active=self.active,
         )
 
     def to_simple_entity(self) -> EstablishmentSimpleEntity:
@@ -317,6 +324,7 @@ class Establishment(TimedAndUnixIdBaseModel):
             open_at_on_monday_to_friday=self.open_at_on_monday_to_friday,
             open_at_on_saturday=self.open_at_on_saturday,
             owner_name=self.owner.username,
+            active=self.active,
         )
 
 

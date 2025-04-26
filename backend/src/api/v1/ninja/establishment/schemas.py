@@ -104,6 +104,7 @@ class EstablishmentSimpleSchema(BaseModel):
     open_at_on_monday_to_friday: Optional[int] = None
     open_at_on_saturday: Optional[int] = None
     owner_name: Optional[str] = None
+    active: Optional[bool] = None
 
     @staticmethod
     def from_entity(
@@ -120,6 +121,7 @@ class EstablishmentSimpleSchema(BaseModel):
             open_at_on_monday_to_friday=entity.open_at_on_monday_to_friday,
             open_at_on_saturday=entity.open_at_on_saturday,
             owner_name=entity.owner_name,
+            active=entity.active,
         )
 
 
@@ -163,6 +165,7 @@ class EstablishmentSchema(BaseModel):
     destruction_date: Optional[str] = None
     direct_loss_est: Optional[float] = None
     indirect_loss_est: Optional[float] = None
+    active: Optional[bool] = None
 
     @staticmethod
     def from_entity(entity: EstablishmentEntity) -> Optional["EstablishmentSchema"]:
@@ -208,6 +211,7 @@ class EstablishmentSchema(BaseModel):
             destruction_date=entity.destruction_date,
             direct_loss_est=entity.direct_loss_est,
             indirect_loss_est=entity.indirect_loss_est,
+            active=entity.active,
         )
 
 
@@ -234,6 +238,7 @@ class EstablishmentCreateSchema(BaseModel):
     has_sign_language: Optional[bool] = None
     has_veterans_discounts: Optional[bool] = None
     has_wifi: Optional[bool] = None
+    edrpou: Optional[str] = None
 
 
 class EstablishmentUpdateSchema(BaseModel):
@@ -259,3 +264,4 @@ class EstablishmentUpdateSchema(BaseModel):
     has_sign_language: Optional[bool] = None
     has_veterans_discounts: Optional[bool] = None
     has_wifi: Optional[bool] = None
+    edrpou: Optional[str] = None

@@ -48,6 +48,7 @@ class EstablishmentSimpleEntity:
     open_at_on_monday_to_friday: Optional[int] = None
     open_at_on_saturday: Optional[int] = None
     owner_name: Optional[str] = None
+    active: Optional[bool] = None
 
 
 @dataclass
@@ -91,3 +92,4 @@ class EstablishmentEntity:
     destruction_date: Optional[str] = None
     direct_loss_est: Optional[float] = None
     indirect_loss_est: Optional[float] = None
+    active: Optional[bool] = None
