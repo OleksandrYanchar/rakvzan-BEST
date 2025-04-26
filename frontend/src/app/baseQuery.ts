@@ -1,7 +1,8 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
+import { API_HOST } from './config';
 
 const baseQuery = fetchBaseQuery({
-    baseUrl: 'http://localhost/api/v1/ninja/',
+    baseUrl: `${API_HOST}/api/v1/ninja/`,
     prepareHeaders: (headers) => {
       const token = localStorage.getItem('access');
       if (token) {
@@ -9,6 +10,10 @@ const baseQuery = fetchBaseQuery({
       }
       return headers;
     },
+  });
+
+const baseRegisterQuery = fetchBaseQuery({
+    baseUrl: `${API_HOST}/api/v1/`,
   });
   
   export const baseQueryWithReauth = async (args: any, api: any, extraOptions: any) => {
@@ -58,5 +63,20 @@ const baseQuery = fetchBaseQuery({
     }),
   });
 
+  export const registerApi = createApi({
+    reducerPath: 'baseApi',
+    baseQuery: baseRegisterQuery,
+    endpoints: (builder) => ({
+      register: builder.mutation({
+        query: (credentials) => ({
+          url: 'drf/auth/register/',
+          method: 'POST',
+          body: credentials,
+        }),
+      }),
+    }),
+  });
+
   export const { useLoginMutation } = baseApi
+  export const { useRegisterMutation } = registerApi
   

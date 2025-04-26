@@ -1,5 +1,6 @@
 import { Box, Button, colors, Divider, Typography } from "@mui/material";
 import { FC, ReactNode } from "react";
+import { Link } from "react-router-dom";
 
 const Footer = () => {
     return (
@@ -31,17 +32,19 @@ const Footer = () => {
                     marginTop: '18px'
                 }}
             >
-                <Button 
-                    variant='outlined'
-                    color='info'
-                    sx={{ 
-                        color: colors.common.white,
-                        width: 'auto',
-                        borderColor: colors.common.white,
-                    }}
-                >
-                    Стати частиною платформи
-                </Button>
+                <Link to='/contact'>
+                    <Button 
+                        variant='outlined'
+                        color='info'
+                        sx={{ 
+                            color: colors.common.white,
+                            width: 'auto',
+                            borderColor: colors.common.white,
+                        }}
+                    >
+                        Стати частиною платформи
+                    </Button>
+                </Link>
             </Box>
         </Box>
     );

@@ -7,6 +7,10 @@ declare module "@mui/material/styles" {
     marker_list_component: React.CSSProperties;
     detail_list_subtitle: React.CSSProperties;
     detail_list_accessability: React.CSSProperties;
+    heshtagWords: React.CSSProperties;
+    title: React.CSSProperties;
+    subTitle: React.CSSProperties;
+    accurdionTitle: React.CSSProperties;
   }
 
   interface TypographyVariantsOptions {
@@ -15,6 +19,10 @@ declare module "@mui/material/styles" {
     marker_list_component?: React.CSSProperties;
     detail_list_subtitle?: React.CSSProperties;
     detail_list_accessability?: React.CSSProperties;
+    heshtagWords?: React.CSSProperties;
+    title?: React.CSSProperties;
+    subTitle?: React.CSSProperties;
+    accurdionTitle?: React.CSSProperties;
   }
 }
 
@@ -25,5 +33,9 @@ declare module "@mui/material/Typography" {
     marker_list_component: true;
     detail_list_subtitle: true;
     detail_list_accessability: true;
+    heshtagWords: true;
+    title: true;
+    subTitle: true;
+    accurdionTitle: true;
   }
 }

@@ -1,73 +1,69 @@
 import { Box, Button, colors, Typography } from "@mui/material"
-import Grid from "@mui/material/Grid"
-import { ReactComponent as MainPageIcon  } from "../images/mainPageIcon.svg"
-import EditIcon from '@mui/icons-material/Edit'
+import React, { useRef } from 'react'
+import { Canvas } from '@react-three/fiber'
+import { OrbitControls, Environment } from '@react-three/drei'
+import { AnimatedModel } from '../components/AnimatedModel'
 
 const Greetings = () => {
+    const modelRef = useRef(null)
+    
+    
     return(
-        <Grid container sx={{ width: '100%', padding: '42px' }}>
-            <Grid size={7}>
+        <Box
+            sx={{
+            }}
+        >
+            <Box
+                sx={{
+                    borderRadius: '25px',
+                    height: '70svh',
+                    position: 'relative'
+                }}
+            >
                 <Box
                     sx={{
+                        position: 'absolute',
+                        color: colors.common.white,
+                        zIndex: 10,
                         height: '100%',
                         display: 'flex',
                         flexDirection: 'column',
-                        justifyContent: 'center'
+                        justifyContent: 'center',
+                        alignItems: 'start',
+                        left: '60px'
                     }}
                 >
-                    <Typography
-                        sx={{
-                            marginBottom: '24px'
-                        }}
-                        variant="h4"
-                    >
-                        Inclusivemap
+                    <Typography variant="heshtagWords">
+                        #СЛАВА УРКАЇНІ
                     </Typography>
-                    <Typography
-                        variant="h2"
-                        sx={{
-                            color: colors.common.black
-                        }}
-                    >
-                        Місто для всіх знайди <br />
-                        доступні місця поруч
+                    <Typography variant="title">
+                    Підрахунок <br/>
+                    збитків внаслідок <br/>
+                     війни в Україні
                     </Typography>
-                    <Typography
-                        variant="subtitle2"
-                        sx={{
-                            marginTop: '27px'
-                        }}
-                    >
-                        InclusiveMap допомагає людям з інвалідністю швидко <br />
-                        знаходити зручні та безбар’єрні простори.
+                    <Typography variant="subTitle">
+                    Наш проєкт допомагає фіксувати збитки для справедливої компенсації, <br/>
+                    планування відновлення та залучення міжнародної підтримки.
                     </Typography>
-                    <Box
+                    <Button
+                        variant="contained"
                         sx={{
-                            marginTop: '59px'
+                            padding: '16px 28px',
+                            fontSize: '18px'
                         }}
                     >
-                        <Button
-                            variant='contained'
-                        >
-                            ЗНАЙТИ МІСЦЕ
-                        </Button>
-                        <Button
-                            variant="outlined"
-                            sx={{
-                                marginLeft: '32px'
-                            }}
-                        >
-                            <EditIcon/>
-                            ДОДАТИ МІСЦЕ
-                        </Button>
-                    </Box>
-
+                        Скористатися картою
+                    </Button>
                 </Box>
-            </Grid>
-            <Grid size={5}>
-                <MainPageIcon/>
-            </Grid>
-        </Grid>
+                <Canvas style={{ borderRadius: '25px' }}>
+                    <ambientLight intensity={0.5} />
+                    {/* <directionalLight position={[5, 10, 7]} /> */}
+                    <AnimatedModel />
+                    <color attach="background" args={['#09030D']} />
+                </Canvas>
+
+            </Box>
+        </Box>
     )
 }
 export default Greetings

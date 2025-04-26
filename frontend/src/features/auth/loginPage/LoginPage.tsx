@@ -14,10 +14,6 @@ const LoginPage = () => {
     
     const authMenu = useSelector((state: RootState) => state.authMenu);
 
-    useEffect(() => {
-        console.log(authMenu)
-    }, [authMenu])
-
     return (
         <Drawer 
             open={authMenu.isModalOpen} 
