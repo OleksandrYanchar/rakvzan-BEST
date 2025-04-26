@@ -544,7 +544,7 @@ class EstablishmentController:
     def spending(
         self,
         request: HttpRequest,
-        code_edrpou: str,
+        esteblishment_id: int,
     ) -> ApiResponse[dict]:
        return ApiResponse(
             data={

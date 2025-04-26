@@ -93,3 +93,4 @@ class EstablishmentEntity:
     direct_loss_est: Optional[float] = None
     indirect_loss_est: Optional[float] = None
     active: Optional[bool] = None
+    description: Optional[str] = None
