@@ -269,12 +269,11 @@ class EstablishmentController:
         establishment = self.establishment_service.activate_establishment(
             establishment_id=establishment_id,
         )
-
-        data = EstablishmentSchema.from_entity(establishment)
+)
 
         return ApiResponse(
             data=StatusOkSchema(
-                    status=data,
+                    status=establishment,
                 ),
         )
         
@@ -292,11 +291,9 @@ class EstablishmentController:
             establishment_id=establishment_id,
         )
 
-        data = EstablishmentSchema.from_entity(establishment)
-
         return ApiResponse(
             data=StatusOkSchema(
-                    status=data,
+                    status=establishment,
                 ),
         )
     
