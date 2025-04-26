@@ -540,7 +540,7 @@ class EstablishmentController:
         )
 
     @route.get(
-        "/spending/{code_edrpou}",
+        "/spending/{esteblishment_id}",
         response=ApiResponse[dict],
         auth=JWTAuth(),
         permissions=[permissions.IsAuthenticated],
