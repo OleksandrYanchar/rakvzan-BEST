@@ -11,9 +11,9 @@ const RegisterForm = () =>{
     const dispatch = useDispatch()
     return (
         <Formik
-            initialValues={{ name: '', email: '',  password: '',  repeatPassword: '' }}
+            initialValues={{ name: '', email: '',  password: '',  repeatPassword: '', edrpou: '' }}
             validate={values => {
-                const errors = {name: '', email: '',  password: '',  repeatPassword: '' };
+                const errors = {name: '', email: '',  password: '',  repeatPassword: '', edrpou: '' };
                 if (!values.email) {
                     errors.email = 'Обов\'язкове';
                 } else if (
@@ -49,7 +49,8 @@ const RegisterForm = () =>{
                     username: values.name,
                     email: values.email,
                     password1: values.password,
-                    password2: values.password
+                    password2: values.password,
+                    edrpou: values.edrpou,
                   }).then(()=>{
                     dispatch(changeActiveForm('log'))
                   })
@@ -146,6 +147,21 @@ const RegisterForm = () =>{
                 error={!!errors?.repeatPassword}
                 />
             {errors?.repeatPassword || ''}
+            <Typography>
+                Код ЄДРПОУ
+            </Typography>
+            <TextField
+                type='password'
+                placeholder="*******"
+                id="input-with-icon-textfield"
+                name="edrpou"
+                onChange={handleChange}
+                label=""
+                sx={{
+                    width: '100%'
+                }}
+                error={!!errors?.edrpou}
+            />
             <Button
                 type="submit"
                 variant="contained"

@@ -2,10 +2,11 @@ import { Alert, Box, Button, Checkbox, CircularProgress, colors, FormControl, Fo
 import { Formik } from "formik"
 import { FC, useState } from "react"
 import LoadImage from "../../loadImageComponent/LoadImage"
-import { AccessibilityListEnum } from "../../../utils/getAccessibilityList"
 import { useLazyActivateQuery, usePostMarkerMutation, usePostPhotosMutation, useLazyActivateFormQuery } from "../slices/markerSlices"
 import { ReactComponent as SucccessImage } from '../assets/images/success.svg'
 import { ReactComponent as UnSucccessImage } from '../assets/images/unSuccess.svg'
+import { ReactComponent as NotFoundDataImage } from '../assets/images/notFoundData.svg'
+import ERDPOYForm from "./ERDPOYForm"
 
 interface CreateMarkerModalInterface {
     isOpen: boolean
@@ -16,16 +17,22 @@ interface CreateMarkerModalInterface {
 
 const CreateMarkerModal: FC<CreateMarkerModalInterface> = ({
     isOpen,
-    handleClose,
+    handleClose: upperHandeClose,
     lat,
     lng,
 }) => {
-    const [triggerPostMarker] = usePostMarkerMutation()
+    const [triggerPostMarker, {data: postMarkerData}] = usePostMarkerMutation()
     const [triggerPostMarkerPhotos] = usePostPhotosMutation()
     const [triggerActivate] = useLazyActivateQuery()
     const [triggerActivateForm] = useLazyActivateFormQuery()
-    const [formStatus, setFormStatus] = useState<'nonActive' | 'error' | 'success' | 'secondConfirmModal'>('nonActive')
+    const [formStatus, setFormStatus] = useState<'nonActive' | 'error' | 'success' | 'secondConfirmModalIsNessesary' | 'secondConfirmModal'>('secondConfirmModalIsNessesary')
     const [isLoading, setIsLoading] = useState<boolean>(false)
+
+    const handleClose = () => {
+        upperHandeClose()
+        setFormStatus("nonActive")
+    }
+
     return(
         <Modal
             open={isOpen}
@@ -34,7 +41,7 @@ const CreateMarkerModal: FC<CreateMarkerModalInterface> = ({
             aria-describedby="modal-modal-description"
             sx={{
                 display: 'flex',
-                justifyContent: 'center',
+                justifyContent: 'flex-end',
                 alignItems: 'center',
                 '& .MuiBackdrop-root':{
                     background: 'none'
@@ -43,8 +50,8 @@ const CreateMarkerModal: FC<CreateMarkerModalInterface> = ({
             >
             <Box
                 sx={{ 
-                    width: '20svw',
-                    height: '40svh',
+                    width: '25svw',
+                    height: formStatus ==='secondConfirmModal'?'90svh': '40svh',
                     background: colors.common.white,
                     padding: '24px',
                     borderRadius:" 25px",
@@ -89,8 +96,10 @@ const CreateMarkerModal: FC<CreateMarkerModalInterface> = ({
                                     id: res.data.data.id,
                                 }).then((res)=>{
                                     triggerActivate({id: res.data.data.id}).then((res) => {
-                                        if (res.data.data.id) {
+                                        if (res.data.data.status) {
                                             setFormStatus('success')
+                                        } else {
+                                            setFormStatus('secondConfirmModalIsNessesary')
                                         }
                                     })
                                     
@@ -203,7 +212,75 @@ const CreateMarkerModal: FC<CreateMarkerModalInterface> = ({
                                 }}
                             />
                             <Button
+                                variant='outlined'
+                                onClick={()=>{
+                                    handleClose()
+                                }}
+                            >
+                                Закрити вікно
+                            </Button>
+                        </Box>
+                        } 
+                        {formStatus === 'secondConfirmModal' && <Box
+                            sx={{
+                                height: '100%',
+                                display: 'flex',
+                                justifyContent: 'space-between',
+                                flexDirection: 'column',
+                                width: 'fit-content'
+                            }}
+                        >
+                            <ERDPOYForm
+                                isLoading={false}
+                                submitAction={(body: any)=>{
+                                    triggerActivateForm({
+                                        ...body,
+                                        id: 123
+                                    })
+                                }}
+                            />
+                            <Button
+                                variant='outlined'
+                                onClick={()=>{
+                                    handleClose()
+                                }}
+                            >
+                                Закрити вікно
+                            </Button>
+                        </Box>
+                        } 
+                        {formStatus === 'secondConfirmModalIsNessesary' && <Box
+                            sx={{
+                                height: '100%',
+                                display: 'flex',
+                                justifyContent: 'space-between',
+                                flexDirection: 'column',
+                                width: 'fit-content'
+                            }}
+                        >
+                            <NotFoundDataImage
+                                style={{
+                                    width: '100%'
+                                }}
+                            />
+                            <Typography variant='h5'>
+                            На ресурсі Gov.ua <a href='https://api.spending.gov.ua/' target="_blank" rel="noopener noreferrer">“https://api.spending.gov.ua/”</a> <br/>
+                                ми не змогли підтверди ваші данні.
+ 
+                            </Typography>
+                            <Button
                                 variant='contained'
+                                onClick={()=>{
+                                    setFormStatus('secondConfirmModal')
+                                }}
+                            >
+                                Пройти перевірку
+                            </Button>
+                            <Button
+                                variant='outlined'
+                                onClick={()=>{
+                                    handleClose()
+                                }}
                             >
                                 Закрити вікно
                             </Button>
@@ -224,7 +301,10 @@ const CreateMarkerModal: FC<CreateMarkerModalInterface> = ({
                                 }}
                             />
                             <Button
-                                variant='contained'
+                                variant='outlined'
+                                onClick={()=>{
+                                    handleClose()
+                                }}
                             >
                                 Закрити вікно
                             </Button>

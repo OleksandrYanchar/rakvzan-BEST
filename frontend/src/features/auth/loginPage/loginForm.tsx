@@ -12,7 +12,7 @@ const LoginForm = () =>{
     const dispatch = useDispatch()
     return (
         <Formik
-            initialValues={{ email: '', password: '' }}
+            initialValues={{ email: '', password: '', edrpou: '' }}
             validate={values => {
                 // const errors = {email: ''};
                 // if (!values.email) {
@@ -27,7 +27,8 @@ const LoginForm = () =>{
             onSubmit={(values, { setSubmitting }) => {
                 triggerLogin({
                     username: values.email,
-                    password: values.password
+                    password: values.password,
+                    edrpou: values.edrpou
                 }).then((res) => {
                     if (res?.data?.username){
                         localStorage.setItem('username', res?.data?.username)
@@ -63,15 +64,6 @@ const LoginForm = () =>{
                     width: '100%'
                 }}
                 error={!!errors?.email}
-                slotProps={{
-                    input: {
-                        startAdornment: (
-                        <InputAdornment position="start">
-                            <FaceIcon />
-                        </InputAdornment>
-                        ),
-                    },
-                }}
             />
             <Typography
                 sx={{
@@ -91,16 +83,22 @@ const LoginForm = () =>{
                     width: '100%'
                 }}
                 error={!!errors?.password}
-                slotProps={{
-                    input: {
-                        startAdornment: (
-                        <InputAdornment position="start">
-                            <LockOutlinedIcon />
-                        </InputAdornment>
-                        ),
-                    },
-                }}
             />
+                <Typography>
+                    Код ЄДРПОУ
+                </Typography>
+               <TextField
+                    type='password'
+                    placeholder="*******"
+                    id="input-with-icon-textfield"
+                    name="edrpou"
+                    onChange={handleChange}
+                    label=""
+                    sx={{
+                        width: '100%'
+                    }}
+                    error={!!errors?.edrpou}
+                />
             <Button
                 type="submit"
                 variant="contained"

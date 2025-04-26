@@ -46,13 +46,13 @@ export const markerSlices = baseApi.injectEndpoints({
       }),
       activate: builder.query({
         query: (body) => ({
-            url: `/api/v1/ninja/establishments/${body.id}/activate`,
+            url: `/establishments/${body.id}/activate`,
             method: 'GET',
           }),
       }),
       activateForm: builder.query({
         query: (body) => ({
-            url: `/api/v1/ninja/establishments/${body.id}/activate_form`,
+            url: `/establishments/${body.id}/activate_form`,
             method: 'GET',
         }),
       }),
