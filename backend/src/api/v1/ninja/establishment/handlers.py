@@ -1,6 +1,7 @@
 from typing import List
 
 from django.http import HttpRequest
+from src.apps.establishments.services.diia_city import fetch_residents
 from ninja import File, Query
 from ninja.constants import NOT_SET
 from ninja.files import UploadedFile
@@ -441,4 +442,25 @@ class EstablishmentController:
 
         return ApiResponse(
             data=data,
+        )
+        
+    @route.get(
+        "/diia_city/{code_edrpou}",
+        response=ApiResponse[dict],
+        auth=None,
+        permissions=[permissions.AllowAny],
+    )
+    def diia_city(
+        self,
+        request: HttpRequest,
+        code_edrpou: str,
+    ) -> ApiResponse[dict]:
+        data = fetch_residents(
+            keyword=code_edrpou,
+        )
+        
+        return ApiResponse(
+            data={
+                "data": data,
+                },
         )
