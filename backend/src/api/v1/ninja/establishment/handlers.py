@@ -256,6 +256,50 @@ class EstablishmentController:
 
         return ApiResponse(data=StatusOkSchema(status=is_establishment_deleted))
 
+    @route.get(
+        "/{establishment_id}/activate",
+        auth=JWTAuth(),
+        permissions=[permissions.IsAuthenticated],
+    )
+    def activate_establishment(
+        self,
+        request: HttpRequest,
+        establishment_id: int,
+    ) -> ApiResponse[StatusOkSchema]:
+        establishment = self.establishment_service.activate_establishment(
+            establishment_id=establishment_id,
+        )
+
+        data = EstablishmentSchema.from_entity(establishment)
+
+        return ApiResponse(
+            data=StatusOkSchema(
+                    status=data,
+                ),
+        )
+        
+    @route.get(
+        "/{establishment_id}/activate_form",
+        auth=JWTAuth(),
+        permissions=[permissions.IsAuthenticated],
+    )
+    def activate_establishment_form(
+        self,
+        request: HttpRequest,
+        establishment_id: int,
+    ) -> ApiResponse[StatusOkSchema]:
+        establishment = self.establishment_service.true_activate_establishment(
+            establishment_id=establishment_id,
+        )
+
+        data = EstablishmentSchema.from_entity(establishment)
+
+        return ApiResponse(
+            data=StatusOkSchema(
+                    status=data,
+                ),
+        )
+    
     @route.post(
         "/{establishment_id}/photos/upload",
         response=ApiResponse[EstablishmentSchema],
