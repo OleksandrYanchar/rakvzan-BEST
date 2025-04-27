@@ -25,4 +25,4 @@ export const mapApi = baseApi.injectEndpoints({
     }),
   });
 
-  export const { useLazyGetPointsQuery, useGetPointQuery, useLazyBuildRouteQuery } = mapApi
+  export const { useLazyGetPointsQuery, useGetPointQuery, useLazyBuildRouteQuery, useLazyGetPointQuery } = mapApi

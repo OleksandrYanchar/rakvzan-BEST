@@ -3,22 +3,23 @@ import { useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../../app/baseStore";
 import CreateComentModal from "./CreateComentModal";
-import Comment from './Comment';
 import { API_HOST } from "../../../app/config";
 import { changeOpenState } from "../../../app/store/authMenuSlice";
+import { useLazyGetPointQuery } from "../slices/mapSLice";
+import { Carousel } from 'react-responsive-carousel';
+import "react-responsive-carousel/lib/styles/carousel.min.css";
 
 const MarkerDetailView = () => {
 
     const [isModalOpen, setIsModalOpen] = useState<boolean>(false)
     const detailMarker = useSelector((state: RootState) => state.detailMarker);
+    const [triggerGetPointData, {data}] = useLazyGetPointQuery()
 
     const dispatch = useDispatch()
-    const [rating, setRating] = useState<number>(0)
 
     useEffect(() => {
-        setRating(detailMarker.comments.reduce((reducer: number, value: any) => {return reducer+value.rating}, 0)/detailMarker.comments.length)
+        detailMarker?.id && triggerGetPointData(detailMarker.id)
     }, [detailMarker])
-
 
     return(
         <>
@@ -40,7 +41,9 @@ const MarkerDetailView = () => {
             <Box
                 sx={{
                     overflowY: 'auto',
-                    height: '100%'
+                    height: '100%',
+                    display: 'flex',
+                    flexDirection: 'column'
                 }}
             >
 
@@ -51,14 +54,19 @@ const MarkerDetailView = () => {
                     }}
                 />
                 {detailMarker?.photos?.length > 0 &&
-                    <img 
-                        src={`${API_HOST}/${detailMarker?.photos[0]?.photo_url}`} 
-                    style={{
-                        width: '100%',
-                        height: 'auto'
-                    }}
-                    alt="img" />
-                }
+                <Carousel>
+                    {data?.data?.establishment?.photos?.map((value: any) => {
+                        return(
+                            <img 
+                                src={`${API_HOST}/${value?.photo_url}`} 
+                                style={{
+                                    width: '100%',
+                                    height: 'auto'
+                                }}
+                                alt="img" />
+                        )
+                    })}
+                </Carousel>}
                 <Typography
                     variant="subtitle1"
                 >
@@ -72,55 +80,22 @@ const MarkerDetailView = () => {
                 >
                     {detailMarker.address}
                 </Typography>
-                <Box
+                <Typography
+                    variant="detail_list_subtitle"
                     sx={{
-                        display: 'grid',
-                        gridTemplateColumns: 'repeat(3, 1fr)'
+                        margin: '12px 0 16px 0'
                     }}
                 >
-                    <Typography variant="marker_title">
-                        Доступність:
-                    </Typography>
-                    {detailMarker.accesabilityList?.filter((value) => Object.values(value)[0]).map((value) => {
-                            return <Typography variant="detail_list_accessability">
-                                {Object.keys(value)[0]}
-                            </Typography>
-                            
-                        })}
-                </Box>
-                <Box
-                    sx={{
-                        display: 'flex',
-                        justifyContent: 'space-between'
-                    }}
-                >
-                    <Typography>
-                        Відгуки:
-                    </Typography>
-                    <Rating name="read-only" value={rating} readOnly />
-                </Box>
-                <Box
-                    sx={{
-                        display: 'flex',
-                        alignItems: 'center',
-                        flexDirection: 'column',
-                        marginBottom: '20px'
-                    }}
-                >
-                    {detailMarker?.comments?.map((value) => {
-                        return(
-                            <Comment
-                                value={value}
-                            />
-                        )
-                    })}
-                </Box>
+                     {data?.data?.establishment?.description}
+                </Typography>
+               
                 <Button
                     variant="contained"
                     sx={{
-                        width: 'calc(100% - 40px)',
+                        width: 'calc(100% - 80px)',
                         position: 'absolute',
-                        bottom: '20px'
+                        bottom: '20px',
+                        left: '40px'
                     }}
                     onClick={()=>{
                         if (localStorage.getItem('username')){
@@ -130,7 +105,7 @@ const MarkerDetailView = () => {
                         }
                     }}
                 >
-                    Написати відгук
+                    Допомогти
                 </Button>
             </Box>
         </Box>

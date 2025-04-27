@@ -5,8 +5,8 @@ import addMarkerIcon from '../assets/images/addMarker.svg';
 export const customIcon = L.icon({
     iconUrl: MarkerIcon, 
     iconRetinaUrl: MarkerIcon,
-    iconSize: [80, 80],
-    iconAnchor: [40, 80],
+    iconSize: [40, 40],
+    iconAnchor: [20, 80],
     popupAnchor: [0, -80],
 
   });

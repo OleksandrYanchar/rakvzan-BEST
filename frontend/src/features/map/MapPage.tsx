@@ -138,7 +138,7 @@ const MapPage = () => {
       <Box
         sx={{
           '& .leaflet-popup-content-wrapper' :{
-            width: '600px',
+            width: '250px',
             display: 'flex',
             justifyContent: 'center'
           },
@@ -166,43 +166,6 @@ const MapPage = () => {
             Немає доступу до ваших геоданих!
         </Alert>
           </Snackbar>
-        <TuneIcon
-          sx={{
-            position: 'absolute',
-            top: '100px',
-            zIndex: 500,
-            right: '50px'
-          }}
-          onClick={()=>{
-            setIsFiltersOpen(!isFiltersOpen)
-          }}
-        />
-        <MapFilterPanel
-          categories={Object.values(AccessibilityListEnum)}
-          selectedCategories={selectedCategories}
-          onChangeCategories={setSelectedCategories}
-          accessibilityChecked={accessibilityChecked}
-          onChangeAccessibility={setAccessibilityChecked}
-          isOpen={isFiltersOpen}
-          handleClose={()=>{
-            setIsFiltersOpen(false)
-          }}
-          onApply={()=>{
-            let filteredKeys: any = []
-            Object.keys(AccessibilityListEnum).forEach((value: string) =>{
-              if(selectedCategories.includes(AccessibilityListEnum[value as keyof typeof AccessibilityListEnum])){
-                filteredKeys[value as keyof typeof filteredKeys] = true
-              }
-            })
-            triggerGetPoints(filteredKeys)
-            setIsFiltersOpen(false)
-          }}
-          onCancel={()=>{
-            triggerGetPoints({})
-            setIsFiltersOpen(false)
-            setSelectedCategories([])
-          }}
-        />
         <CreateMarkerModal
           isOpen={isCreateModalOpen}
           handleClose={()=>{

@@ -234,6 +234,16 @@ const CreateMarkerModal: FC<CreateMarkerModalInterface> = ({
                                     width: '100%'
                                 }}
                             />
+                            <Typography 
+                                variant='h5'
+                                sx={{
+                                    width: '100%',
+                                    textAlign: 'center'
+                                }}
+                            >
+                                Успішно!
+ 
+                            </Typography>
                             <Button
                                 variant='outlined'
                                 onClick={()=>{
@@ -256,9 +266,17 @@ const CreateMarkerModal: FC<CreateMarkerModalInterface> = ({
                             <ERDPOYForm
                                 isLoading={false}
                                 submitAction={(body: any)=>{
+                                    console.log(postMarkerData)
                                     triggerActivateForm({
                                         ...body,
-                                        id: 123
+                                        id: postMarkerData?.data?.id
+                                    }).then((res) => {
+                                        console.log(res)
+                                        if (res?.data?.data?.status) {
+                                            setFormStatus('success')
+                                        } else {
+                                            setFormStatus('error')
+                                        }
                                     })
                                 }}
                             />

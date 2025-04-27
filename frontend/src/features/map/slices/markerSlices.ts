@@ -15,7 +15,7 @@ export const markerSlices = baseApi.injectEndpoints({
             website: '',
             open_at_on_monday_to_friday: 0,
             open_at_on_saturday: 0,
-            description: '',
+            description: body.description,
             has_ramp: true,
             has_parking: true,
             has_bathroom: true,
@@ -27,7 +27,7 @@ export const markerSlices = baseApi.injectEndpoints({
             has_guide: true,
             has_sign_language: true,
             has_veterans_discounts: true,
-            has_wifi: true
+            has_wifi: true,
           },
         }),
       }),
