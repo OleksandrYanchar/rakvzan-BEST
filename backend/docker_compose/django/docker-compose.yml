@@ -32,109 +32,109 @@ services:
       retries: 5
       start_period: 30s
 
-  celery_worker_1:
-    build:
-      context: ../.. 
-      dockerfile: docker_compose/worker_1/Dockerfile
-    container_name: celery_worker_1
-    restart: unless-stopped
-    volumes:
-      - ../../src:/app/src 
-      - ../../.env:/app/.env
-    env_file:
-      - ../../.env
-    depends_on:
-      - redis
-    networks:
-      - backend
-    environment:
-      DJANGO_SECRET_KEY: ${DJANGO_SECRET_KEY}
-      POSTGRES_HOST: ${POSTGRES_HOST}
-      POSTGRES_PORT: ${POSTGRES_PORT}
-      CELERY_BROKER_URL: ${CELERY_BROKER_URL}
-      CELERY_RESULT_BACKEND: ${CELERY_RESULT_BACKEND}
+  # celery_worker_1:
+  #   build:
+  #     context: ../.. 
+  #     dockerfile: docker_compose/worker_1/Dockerfile
+  #   container_name: celery_worker_1
+  #   restart: unless-stopped
+  #   volumes:
+  #     - ../../src:/app/src 
+  #     - ../../.env:/app/.env
+  #   env_file:
+  #     - ../../.env
+  #   depends_on:
+  #     - redis
+  #   networks:
+  #     - backend
+  #   environment:
+  #     DJANGO_SECRET_KEY: ${DJANGO_SECRET_KEY}
+  #     POSTGRES_HOST: ${POSTGRES_HOST}
+  #     POSTGRES_PORT: ${POSTGRES_PORT}
+  #     CELERY_BROKER_URL: ${CELERY_BROKER_URL}
+  #     CELERY_RESULT_BACKEND: ${CELERY_RESULT_BACKEND}
 
-  celery_worker_2:
-    build:
-      context: ../.. 
-      dockerfile: docker_compose/worker_2/Dockerfile
-    container_name: celery_worker_2
-    restart: unless-stopped
-    volumes:
-      - ../../src:/app/src 
-      - ../../.env:/app/.env
-    env_file:
-      - ../../.env
-    depends_on:
-      - redis
-    networks:
-      - backend
-    environment:
-      DJANGO_SECRET_KEY: ${DJANGO_SECRET_KEY}
-      POSTGRES_HOST: ${POSTGRES_HOST}
-      POSTGRES_PORT: ${POSTGRES_PORT}
-      CELERY_BROKER_URL: ${CELERY_BROKER_URL}
-      CELERY_RESULT_BACKEND: ${CELERY_RESULT_BACKEND}
+  # celery_worker_2:
+  #   build:
+  #     context: ../.. 
+  #     dockerfile: docker_compose/worker_2/Dockerfile
+  #   container_name: celery_worker_2
+  #   restart: unless-stopped
+  #   volumes:
+  #     - ../../src:/app/src 
+  #     - ../../.env:/app/.env
+  #   env_file:
+  #     - ../../.env
+  #   depends_on:
+  #     - redis
+  #   networks:
+  #     - backend
+  #   environment:
+  #     DJANGO_SECRET_KEY: ${DJANGO_SECRET_KEY}
+  #     POSTGRES_HOST: ${POSTGRES_HOST}
+  #     POSTGRES_PORT: ${POSTGRES_PORT}
+  #     CELERY_BROKER_URL: ${CELERY_BROKER_URL}
+  #     CELERY_RESULT_BACKEND: ${CELERY_RESULT_BACKEND}
 
-  celery_worker_3:
-    build:
-      context: ../.. 
-      dockerfile: docker_compose/worker_3/Dockerfile
-    container_name: celery_worker_3
-    restart: unless-stopped
-    volumes:
-      - ../../src:/app/src 
-      - ../../.env:/app/.env
-    env_file:
-      - ../../.env
-    depends_on:
-      - redis
-    networks:
-      - backend
-    environment:
-      DJANGO_SECRET_KEY: ${DJANGO_SECRET_KEY}
-      POSTGRES_HOST: ${POSTGRES_HOST}
-      POSTGRES_PORT: ${POSTGRES_PORT}
-      CELERY_BROKER_URL: ${CELERY_BROKER_URL}
-      CELERY_RESULT_BACKEND: ${CELERY_RESULT_BACKEND}
+  # celery_worker_3:
+  #   build:
+  #     context: ../.. 
+  #     dockerfile: docker_compose/worker_3/Dockerfile
+  #   container_name: celery_worker_3
+  #   restart: unless-stopped
+  #   volumes:
+  #     - ../../src:/app/src 
+  #     - ../../.env:/app/.env
+  #   env_file:
+  #     - ../../.env
+  #   depends_on:
+  #     - redis
+  #   networks:
+  #     - backend
+  #   environment:
+  #     DJANGO_SECRET_KEY: ${DJANGO_SECRET_KEY}
+  #     POSTGRES_HOST: ${POSTGRES_HOST}
+  #     POSTGRES_PORT: ${POSTGRES_PORT}
+  #     CELERY_BROKER_URL: ${CELERY_BROKER_URL}
+  #     CELERY_RESULT_BACKEND: ${CELERY_RESULT_BACKEND}
 
-  celery_worker_4:
-    build:
-      context: ../.. 
-      dockerfile: docker_compose/worker_4/Dockerfile
-    container_name: celery_worker_4
-    restart: unless-stopped
-    volumes:
-      - ../../src:/app/src 
-      - ../../.env:/app/.env
-    env_file:
-      - ../../.env
-    depends_on:
-      - redis
-    networks:
-      - backend
-    environment:
-      DJANGO_SECRET_KEY: ${DJANGO_SECRET_KEY}
-      POSTGRES_HOST: ${POSTGRES_HOST}
-      POSTGRES_PORT: ${POSTGRES_PORT}
-      CELERY_BROKER_URL: ${CELERY_BROKER_URL}
-      CELERY_RESULT_BACKEND: ${CELERY_RESULT_BACKEND}
+  # celery_worker_4:
+  #   build:
+  #     context: ../.. 
+  #     dockerfile: docker_compose/worker_4/Dockerfile
+  #   container_name: celery_worker_4
+  #   restart: unless-stopped
+  #   volumes:
+  #     - ../../src:/app/src 
+  #     - ../../.env:/app/.env
+  #   env_file:
+  #     - ../../.env
+  #   depends_on:
+  #     - redis
+  #   networks:
+  #     - backend
+  #   environment:
+  #     DJANGO_SECRET_KEY: ${DJANGO_SECRET_KEY}
+  #     POSTGRES_HOST: ${POSTGRES_HOST}
+  #     POSTGRES_PORT: ${POSTGRES_PORT}
+  #     CELERY_BROKER_URL: ${CELERY_BROKER_URL}
+  #     CELERY_RESULT_BACKEND: ${CELERY_RESULT_BACKEND}
 
-  celery_beat:
-    build:
-      context: ../.. 
-      dockerfile: docker_compose/beat/Dockerfile
-    container_name: celery_beat
-    restart: unless-stopped
-    volumes:
-      - ../../src:/app/src 
-      - ../../.env:/app/.env
-    env_file:
-      - ../../.env
-    depends_on:
-      - redis
-    networks:
-      - backend
+  # celery_beat:
+  #   build:
+  #     context: ../.. 
+  #     dockerfile: docker_compose/beat/Dockerfile
+  #   container_name: celery_beat
+  #   restart: unless-stopped
+  #   volumes:
+  #     - ../../src:/app/src 
+  #     - ../../.env:/app/.env
+  #   env_file:
+  #     - ../../.env
+  #   depends_on:
+  #     - redis
+  #   networks:
+  #     - backend
 
   flower:
     build: 

@@ -47,75 +47,75 @@ services:
     ]
     user: "postgres"
 
-  # ---------- BACKUP ----------
-  backup:
-    image: postgres:15
-    container_name: postgres_backup
-    restart: unless-stopped
-    env_file:
-      - ../../.env
-    environment:
-      PGPASSWORD: ${POSTGRES_PASSWORD}
-    volumes:
-      - ./backups:/backups
-      - ./backup.sh:/backup.sh
-    networks:
-      - backend
-    depends_on:
-      - postgres
-    command: sh -c "while true; do /backup.sh; sleep 86400; done"
+#   # ---------- BACKUP ----------
+#   backup:
+#     image: postgres:15
+#     container_name: postgres_backup
+#     restart: unless-stopped
+#     env_file:
+#       - ../../.env
+#     environment:
+#       PGPASSWORD: ${POSTGRES_PASSWORD}
+#     volumes:
+#       - ./backups:/backups
+#       - ./backup.sh:/backup.sh
+#     networks:
+#       - backend
+#     depends_on:
+#       - postgres
+#     command: sh -c "while true; do /backup.sh; sleep 86400; done"
 
-  # ---------- REPLICA1 ----------
-  replica1:
-    image: postgres:15
-    container_name: postgres_replica1
-    restart: unless-stopped
-    env_file:
-      - ../../.env
-    environment:
-      PGUSER: replicator
-      PGPASSWORD: ${POSTGRES_REPLICATION_PASSWORD}
-      PGDATABASE: postgres
-    # volumes:
-    #   - replica1_data:/var/lib/postgresql/data
-    networks:
-      - backend
-    depends_on:
-      postgres:
-        condition: service_healthy
-    healthcheck:
-      test: ["CMD-SHELL", "pg_isready -h postgres -U replicator"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
-      start_period: 10s
-    command: >
-      sh -c "until pg_basebackup --pgdata=/var/lib/postgresql/data -R --slot=replication_slot_replica1 --host=postgres --port=5432 --username=replicator; do echo 'Waiting for primary...'; sleep 2; done; chmod 0700 /var/lib/postgresql/data && exec postgres"
-    user: postgres
+#   # ---------- REPLICA1 ----------
+#   replica1:
+#     image: postgres:15
+#     container_name: postgres_replica1
+#     restart: unless-stopped
+#     env_file:
+#       - ../../.env
+#     environment:
+#       PGUSER: replicator
+#       PGPASSWORD: ${POSTGRES_REPLICATION_PASSWORD}
+#       PGDATABASE: postgres
+#     # volumes:
+#     #   - replica1_data:/var/lib/postgresql/data
+#     networks:
+#       - backend
+#     depends_on:
+#       postgres:
+#         condition: service_healthy
+#     healthcheck:
+#       test: ["CMD-SHELL", "pg_isready -h postgres -U replicator"]
+#       interval: 10s
+#       timeout: 5s
+#       retries: 5
+#       start_period: 10s
+#     command: >
+#       sh -c "until pg_basebackup --pgdata=/var/lib/postgresql/data -R --slot=replication_slot_replica1 --host=postgres --port=5432 --username=replicator; do echo 'Waiting for primary...'; sleep 2; done; chmod 0700 /var/lib/postgresql/data && exec postgres"
+#     user: postgres
 
-  # ---------- REPLICA2 ----------
-  replica2:
-    image: postgres:15
-    container_name: postgres_replica2
-    restart: unless-stopped
-    env_file:
-      - ../../.env
-    environment:
-      PGUSER: replicator
-      PGPASSWORD: ${POSTGRES_REPLICATION_PASSWORD}
-      PGDATABASE: postgres
-    # volumes:
-    #   - replica2_data:/var/lib/postgresql/data
-    networks:
-      - backend
-    depends_on:
-      postgres:
-        condition: service_healthy
-    command: >
-      sh -c "until pg_basebackup --pgdata=/var/lib/postgresql/data -R --slot=replication_slot_replica2 --host=postgres --port=5432 --username=replicator; do echo 'Waiting for primary...'; sleep 2; done; chmod 0700 /var/lib/postgresql/data && exec postgres"
-    user: postgres
+#   # ---------- REPLICA2 ----------
+#   replica2:
+#     image: postgres:15
+#     container_name: postgres_replica2
+#     restart: unless-stopped
+#     env_file:
+#       - ../../.env
+#     environment:
+#       PGUSER: replicator
+#       PGPASSWORD: ${POSTGRES_REPLICATION_PASSWORD}
+#       PGDATABASE: postgres
+#     # volumes:
+#     #   - replica2_data:/var/lib/postgresql/data
+#     networks:
+#       - backend
+#     depends_on:
+#       postgres:
+#         condition: service_healthy
+#     command: >
+#       sh -c "until pg_basebackup --pgdata=/var/lib/postgresql/data -R --slot=replication_slot_replica2 --host=postgres --port=5432 --username=replicator; do echo 'Waiting for primary...'; sleep 2; done; chmod 0700 /var/lib/postgresql/data && exec postgres"
+#     user: postgres
 
-# ---------- VOLUMES ----------
+# # ---------- VOLUMES ----------
 volumes:
   postgres_data:
   # replica1_data:
