@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 from typing import List, Optional
 
-
+from django.conf import settings
 from django.contrib.auth.models import User
 from django.core.files.uploadedfile import UploadedFile
 from django.db.models import Q
@@ -67,12 +67,10 @@ class ORMEstablishmentPhotoService(EstablishmentPhotoService):
             files = {"image": (file.name, file, file.content_type)}
             
             try:
-                response = requests.post("http://fastapi:8001/analyze", files=files, timeout=10)
+                response = requests.post(f"{settings.FASTAPI_HOST_PORT}/analyze", files=files, timeout=10)
                 response.raise_for_status()
                 analysis_result = response.json().get("predictions", {})
-                print(f"AI analysis result: {analysis_result}")
             except Exception as e:
-                print(f"Error calling AI service for image analysis: {e}")
                 analysis_result = {}
             
             updated = False
@@ -278,12 +276,8 @@ class ORMEstablishmentService(EstablishmentService):
 
             return [establishment.to_simple_entity() for establishment in establishments]
         except ValueError as e:
-            # Handle the case where the conversion to int fails
-            print(f"Invalid owner ID: {e}")
             return []
         except Exception as e:
-            # Handle any other exceptions that may occur
-            print(f"An error occurred: {e}")
             return []
 
     def create_establishment(

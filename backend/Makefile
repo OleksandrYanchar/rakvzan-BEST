@@ -324,7 +324,7 @@ rm-all:
 	docker rm $(docker ps -q -a)
 
 # FastAPI
-up-fastapi:
+up-:fastapi
 	$(DC) -f docker_compose/fastapi/docker-compose.yml $(ENV) up -d
 
 up-fastapi-prod:

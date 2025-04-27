@@ -42,7 +42,6 @@ def train_model() -> None:
     )
     model.fit(X, y)
     joblib.dump(model, save_path)
-    print(f"Model trained and saved to {save_path}")
 
 _model = None
 

@@ -1,5 +1,6 @@
 from typing import List
 
+from django.conf import settings
 from django.http import HttpRequest
 from src.apps.establishments.services.diia_city import fetch_residents
 from ninja import File, Query
@@ -561,8 +562,8 @@ class EstablishmentController:
     @route.get(
         "/spending/{establishment_id}",
         response=ApiResponse[dict],
-        #auth=JWTAuth(),
-        #permissions=[permissions.IsAuthenticated],
+        auth=JWTAuth(),
+        permissions=[permissions.IsAuthenticated],
     )
     def spending(
         self,
@@ -580,16 +581,14 @@ class EstablishmentController:
         spending_gov_ua_payload = spending_gov_ua_response.json()
         spending_gov_ua_data = spending_gov_ua_payload.get("data", [])
         
-        # Prepare the payload matching the LossRequest schema:
         payload = {
-            "records": [],  # Fill with procurement records if available
-            "establishment": establishment.__dict__  # or use a serializer/dict conversion method
+            "records": [spending_gov_ua_data],  
+            "establishment": establishment.__dict__
         }
 
-        print("Payload sent to /estimate:", payload)
         estimate_response = req.post(
-            url="http://fastapi:8001/estimate",
-            json=payload,  # Sends JSON payload; FastAPI expects JSON
+            url=f"{settings.FASTAPI_HOST_PORT}/estimate",
+            json=payload,
             timeout=10,
         )
         estimate_response.raise_for_status()

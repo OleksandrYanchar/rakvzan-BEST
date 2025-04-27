@@ -1,3 +1,4 @@
+import os
 from datetime import timedelta
 
 from config.settings.main import SECRET_KEY
@@ -57,3 +58,5 @@ CORS_ALLOWED_ORIGIN = [
     'http://107.173.91.186 ',
     'http://107.173.91.186:81',
     ]
+
+FASTAPI_HOST_PORT = os.environ.get("FASTAPI_HOST_PORT", "http://fastapi:8001")
