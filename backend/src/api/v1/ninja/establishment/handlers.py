@@ -202,32 +202,41 @@ class EstablishmentController:
         request: HttpRequest,
         payload: EstablishmentCreateSchema,
     ) -> ApiResponse[dict]:
-        user = request.user
-        
-        diia_url = "https://api.spending.gov.ua/api/v2/disposers/acts"
-        diia_params = {"contractorId": payload.edrpou}
-        
-        
-        diia_city_response = req.get(diia_url, params=diia_params)
-        diia_city_response.raise_for_status()
-        
-        diia_payload = diia_city_response.json()
-        
-        if diia_payload.get("count", 0) == 0:
-            return ApiResponse(
-                data={"123": 123},
+        try:
+            user = request.user
+            
+            diia_url = "https://api.spending.gov.ua/api/v2/disposers/acts"
+            diia_params = {"contractorId": payload.edrpou}
+            
+            
+            diia_city_response = req.get(diia_url, params=diia_params)
+            diia_city_response.raise_for_status()
+            
+            diia_payload = diia_city_response.json()
+            
+            if diia_payload.get("count", 0) == 0:
+                return ApiResponse(
+                    data={"123": 123},
+                )
+
+            establishment = self.establishment_service.create_establishment(
+                user=user,
+                establishment_data=payload.dict(),
             )
 
-        establishment = self.establishment_service.create_establishment(
-            user=user,
-            establishment_data=payload.dict(),
-        )
+            data = EstablishmentSchema.from_entity(establishment)
 
-        data = EstablishmentSchema.from_entity(establishment)
-
-        return ApiResponse(
-            data=data,
-        )
+            return ApiResponse(
+                data=data
+                # data={
+                    
+                    # "777": 777
+                    # },
+            )
+        except Exception as e:
+            print(e)
+            print("*" * 100)
+            
 
     @route.put(
         "/{establishment_id}",
