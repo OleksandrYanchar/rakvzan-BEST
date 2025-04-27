@@ -7,6 +7,7 @@ import { ReactComponent as SucccessImage } from '../assets/images/success.svg'
 import { ReactComponent as UnSucccessImage } from '../assets/images/unSuccess.svg'
 import { ReactComponent as NotFoundDataImage } from '../assets/images/notFoundData.svg'
 import ERDPOYForm from "./ERDPOYForm"
+import TextareaAutosize from '@mui/material/TextareaAutosize';
 
 interface CreateMarkerModalInterface {
     isOpen: boolean
@@ -25,7 +26,7 @@ const CreateMarkerModal: FC<CreateMarkerModalInterface> = ({
     const [triggerPostMarkerPhotos] = usePostPhotosMutation()
     const [triggerActivate] = useLazyActivateQuery()
     const [triggerActivateForm] = useLazyActivateFormQuery()
-    const [formStatus, setFormStatus] = useState<'nonActive' | 'error' | 'success' | 'secondConfirmModalIsNessesary' | 'secondConfirmModal'>('secondConfirmModalIsNessesary')
+    const [formStatus, setFormStatus] = useState<'nonActive' | 'error' | 'success' | 'secondConfirmModalIsNessesary' | 'secondConfirmModal'>('nonActive')
     const [isLoading, setIsLoading] = useState<boolean>(false)
 
     const handleClose = () => {
@@ -51,7 +52,7 @@ const CreateMarkerModal: FC<CreateMarkerModalInterface> = ({
             <Box
                 sx={{ 
                     width: '25svw',
-                    height: formStatus ==='secondConfirmModal'?'90svh': '40svh',
+                    height: formStatus ==='secondConfirmModal'?'90svh': '50svh',
                     background: colors.common.white,
                     padding: '24px',
                     borderRadius:" 25px",
@@ -77,6 +78,7 @@ const CreateMarkerModal: FC<CreateMarkerModalInterface> = ({
                         address: '', 
                         photos: [] as File[],
                         EDRPOYCode: '',
+                        description: '',
                     }}
                     onSubmit={async (values, { setSubmitting }) => {
                         setIsLoading(true)
@@ -85,11 +87,17 @@ const CreateMarkerModal: FC<CreateMarkerModalInterface> = ({
                             latitude: lat,
                             longitude: lng,
                             address: values.address,
-                            edrpou: values.EDRPOYCode
+                            edrpou: values.EDRPOYCode,
+                            description: values.description,
                         }).catch(() => {
                             setFormStatus('error')
                             setIsLoading(false)
                         }).then((res: any) => {
+                            if (res?.error){
+                                setFormStatus('error')
+                                setIsLoading(false)
+                            }
+                            console.log(res)
                             if (res.data.data.id){
                                 triggerPostMarkerPhotos({
                                     photos: values.photos,
@@ -169,6 +177,18 @@ const CreateMarkerModal: FC<CreateMarkerModalInterface> = ({
                                 }}
                                 error={!!errors?.EDRPOYCode}
                             />
+                            <TextareaAutosize
+                                aria-label="minimum height"
+                                name='description'
+                                onChange={handleChange}
+                                value={values.description}
+                                minRows={3}
+                                placeholder="Опишіть що трапилось"
+                                style={{ 
+                                    width: '100%',
+                                    marginTop: '20px'
+                                }}
+                                />
                             <Button
                                 loading={isLoading}
                                 type="submit"
@@ -300,6 +320,9 @@ const CreateMarkerModal: FC<CreateMarkerModalInterface> = ({
                                     width: '100%'
                                 }}
                             />
+                            <Typography variant='h5'>
+                                Сталась помилка при спробі надіслати Вашу заявку
+                            </Typography>
                             <Button
                                 variant='outlined'
                                 onClick={()=>{

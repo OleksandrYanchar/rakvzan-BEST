@@ -1,1 +1,1 @@
-export const API_HOST='https://api.rakvzan.space'
+export const API_HOST='http://localhost'
