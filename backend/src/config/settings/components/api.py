@@ -52,4 +52,8 @@ ALLOWED_HOSTS = ['*']
 CORS_ALLOWED_ORIGIN = [
     'http://localhost:81',
     'https://rakvzan.space',
+    'http://198.46.226.156',
+    'http://198.46.226.156:81',
+    'http://107.173.91.186 ',
+    'http://107.173.91.186:81',
     ]
