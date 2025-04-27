@@ -338,7 +338,12 @@ class ORMEstablishmentService(EstablishmentService):
             establishment = EstablishmentModel.objects.get(id=establishment_id)
             
             establishment.is_active = True
+            establishment.active = True
             establishment.save()
             return True
         except EstablishmentModel.DoesNotExist:
             return False
+        except Exception as e:
+            print("*" * 100)
+            print(e)
+            print("*" * 100)
