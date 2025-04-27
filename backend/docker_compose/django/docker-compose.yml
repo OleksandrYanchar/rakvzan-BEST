@@ -136,28 +136,28 @@ services:
   #   networks:
   #     - backend
 
-  flower:
-    build: 
-      context: ../..
-      dockerfile: docker_compose/flower/Dockerfile
-    container_name: flower
-    restart: unless-stopped
-    volumes:
-      - ../../src:/app/src 
-      - ../../.env:/app/.env
-    ports:
-      - "5555:5555"
-    depends_on:
-      - django
-      - redis
-      - celery_worker_1
-      - celery_worker_2
-    env_file:
-      - ../../.env
-    networks:
-      - backend
-    environment:
-      CELERY_BROKER_URL: ${CELERY_BROKER_URL}
+#  flower:
+#    build: 
+#      context: ../..
+#      dockerfile: docker_compose/flower/Dockerfile
+#    container_name: flower
+#    restart: unless-stopped
+#    volumes:
+#      - ../../src:/app/src 
+#      - ../../.env:/app/.env
+#    ports:
+#      - "5555:5555"
+#    depends_on:
+#      - django
+#      - redis
+#      - celery_worker_1
+#      - celery_worker_2
+#    env_file:
+#      - ../../.env
+#    networks:
+#      - backend
+#    environment:
+#      CELERY_BROKER_URL: ${CELERY_BROKER_URL}
 
   redis:
     image: redis:latest
