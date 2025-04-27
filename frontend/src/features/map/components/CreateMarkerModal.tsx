@@ -113,6 +113,9 @@ const CreateMarkerModal: FC<CreateMarkerModalInterface> = ({
                                     
                                 })
                                 setIsLoading(false)
+                            } else {
+                                setFormStatus('error')
+                                setIsLoading(false)
                             }
                         })
                     }}
