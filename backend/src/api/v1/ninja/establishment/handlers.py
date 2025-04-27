@@ -559,18 +559,39 @@ class EstablishmentController:
         )
 
     @route.get(
-        "/spending/{esteblishment_id}",
+        "/spending/{establishment_id}",
         response=ApiResponse[dict],
-        auth=JWTAuth(),
-        permissions=[permissions.IsAuthenticated],
+        #auth=JWTAuth(),
+        #permissions=[permissions.IsAuthenticated],
     )
     def spending(
         self,
         request: HttpRequest,
-        esteblishment_id: int,
+        establishment_id: int,
     ) -> ApiResponse[dict]:
-       return ApiResponse(
-            data={
-                "data": 123
-            },
+        establishment = self.establishment_service.get_establishment_by_id(establishment_id)
+        if not establishment:
+            return ApiResponse(data=None)
+            
+        spending_gov_ua_url = "https://city-backend.diia.gov.ua/api/front/registry/resident"
+        spending_gow_ua_params = {"kw": establishment.edrpou}
+        spending_gov_ua_response = req.get(spending_gov_ua_url, params=spending_gow_ua_params)
+        spending_gov_ua_response.raise_for_status()
+        spending_gov_ua_payload = spending_gov_ua_response.json()
+        spending_gov_ua_data = spending_gov_ua_payload.get("data", [])
+        
+        # Prepare the payload matching the LossRequest schema:
+        payload = {
+            "records": [],  # Fill with procurement records if available
+            "establishment": establishment.__dict__  # or use a serializer/dict conversion method
+        }
+
+        print("Payload sent to /estimate:", payload)
+        estimate_response = req.post(
+            url="http://fastapi:8001/estimate",
+            json=payload,  # Sends JSON payload; FastAPI expects JSON
+            timeout=10,
         )
+        estimate_response.raise_for_status()
+        response_payload = estimate_response.json()
+        return ApiResponse(data=response_payload)

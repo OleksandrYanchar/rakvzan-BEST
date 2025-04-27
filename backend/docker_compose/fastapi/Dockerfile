@@ -8,5 +8,5 @@ WORKDIR /app
 COPY ./requirements/fastapi.txt /app/
 RUN pip install --no-cache-dir -r fastapi.txt
 
-COPY ../../fastapi /app/fastapi
+COPY ../../fastapi_service /app/fastapi_service
 
