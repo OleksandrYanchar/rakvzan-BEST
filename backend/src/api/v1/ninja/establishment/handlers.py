@@ -201,8 +201,22 @@ class EstablishmentController:
         self,
         request: HttpRequest,
         payload: EstablishmentCreateSchema,
-    ) -> ApiResponse[EstablishmentSchema]:
+    ) -> ApiResponse[dict]:
         user = request.user
+        
+        diia_url = "https://api.spending.gov.ua/api/v2/disposers/acts"
+        diia_params = {"contractorId": payload.edrpou}
+        
+        
+        diia_city_response = req.get(diia_url, params=diia_params)
+        diia_city_response.raise_for_status()
+        
+        diia_payload = diia_city_response.json()
+        
+        if diia_payload.get("count", 0) == 0:
+            return ApiResponse(
+                data={"123": 123},
+            )
 
         establishment = self.establishment_service.create_establishment(
             user=user,
